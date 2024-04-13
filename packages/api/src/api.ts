@@ -92,21 +92,10 @@ export class FuncyApi<
         query: ev.queryStringParameters as TQuery,
         path: ev.pathParameters as TPath,
         event: ev as TEvent,
-        authorizer: ev.requestContext.authorizer as TAuthorizer,
+        authorizer: ev.requestContext?.authorizer as TAuthorizer,
         context,
       })
     })
-  }
-
-  // Convenience methods
-  get = <
-    TResponse = void,
-    TPath = APIGatewayProxyEventPathParameters,
-    TQuery = APIGatewayProxyEventQueryStringParameters,
-  >(
-    opts: FuncyApiOptions<TResponse, never, TPath, TQuery, TAuthorizer, TEvent>,
-  ) => {
-    return this.handler(opts)
   }
 }
 
