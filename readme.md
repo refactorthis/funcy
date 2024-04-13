@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.jpg" width="200px" align="center" alt="funcy logo" />
+  <img src="docs/static/logo.jpg" width="200px" align="center" alt="funcy logo" />
   <h1 align="center">funcy</h1>
   <p align="center">
     <br/>
