@@ -1,46 +1,36 @@
 <p align="center">
-  <img src="logo.svg" width="200px" align="center" alt="funcy logo" />
-  <h1 align="center">functly</h1>
+  <img src="logo.jpg" width="200px" align="center" alt="funcy logo" />
+  <h1 align="center">funcy</h1>
   <p align="center">
-    ✨ <a href="https://functly.dev">https://functly.dev</a> ✨
     <br/>
     TypeScript-first, functional interface for AWS lambda handlers
+    <br />
   </p>
 </p>
-<br/>
-<p align="center">
+<!-- <p align="center">
 <a href="https://github.com/colinhacks/zod/actions?query=branch%3Amaster"><img src="https://github.com/colinhacks/zod/actions/workflows/test.yml/badge.svg?event=push&branch=master" alt="Zod CI status" /></a>
 <a href="https://twitter.com/colinhacks" rel="nofollow"><img src="https://img.shields.io/badge/created%20by-@colinhacks-4BBAAB.svg" alt="Created by Colin McDonnell"></a>
 <a href="https://opensource.org/licenses/MIT" rel="nofollow"><img src="https://img.shields.io/github/license/colinhacks/zod" alt="License"></a>
 <a href="https://www.npmjs.com/package/zod" rel="nofollow"><img src="https://img.shields.io/npm/dw/zod.svg" alt="npm"></a>
 <a href="https://www.npmjs.com/package/zod" rel="nofollow"><img src="https://img.shields.io/github/stars/colinhacks/zod" alt="stars"></a>
 <a href="https://discord.gg/KaSRdyX2vc" rel="nofollow"><img src="https://img.shields.io/discord/893487829802418277?label=Discord&logo=discord&logoColor=white" alt="discord server"></a>
-</p>
+</p> -->
 
 <div align="center">
-  <a href="https://zod.dev">Documentation</a>
+  <a href="#">docs</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://discord.gg/RcG33DQJdf">Discord</a>
+  <a href="https://www.npmjs.com/package/@refactorthis/funcy">npm</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.npmjs.com/package/zod">npm</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://deno.land/x/zod">deno</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://github.com/colinhacks/zod/issues/new">Issues</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://twitter.com/colinhacks">@colinhacks</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://trpc.io">tRPC</a>
-  <br />
+  <a href="https://github.com/refactorthis/funcy/issues/new">issues</a>
 </div>
 
-<br/>
-<br/>
+<br />
 
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
+- [Preview](#preview)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Examples](#examples)
@@ -66,6 +56,35 @@ The key design principles of funcy are as follows:
 
 If you like lightweight lambda functions and don't want a full-blown framework like Nest.js, then this is for you.
 
+## Preview
+
+The example below shows parsing, validating and creating a strongly-typed model for both request and response. You'll notice that the handler itself does not contain any parsing, validation or error handling logic, we adhere to the single-responsibility-principle here and handle all other aspects in middleware, configurable at either api or handler level.
+
+```typescript
+import { api, res } from '@funcy/api'
+
+// create customer handler
+export const create = api.handler({
+  validation: {
+    type: 'zod',
+    request: CreateCustomerRequest // zod schema,
+    response: CreateCustomerResponse // zod schema,
+  },
+  handler: async ({ request }) = {
+    const response = await Customer.create(request)
+    return res.ok(response)
+  }
+})
+```
+
+As you can see, the TypeScript type is inferred at compile time, allowing strong typing of all request and response parameters to your API.
+
+![example image](docs/static/example-strongly-typed.png)
+
+funcy also has a full middleware pipeline, allowing you to control things like CORS, content negotiation, encoding, security header best practices, etc. all out of the box. All you need to do is ctrl+space to see the options. Options can either be set as default for the whole api, or overridden for each handler
+
+![example image](docs/static/example-autocomplete.png)
+
 ## Installation
 
 ```bash
@@ -77,18 +96,21 @@ pnpm add @funcy/api
 
 ## Getting Started
 
-To get started let's create a simple API Gateway Proxy (HTTP or REST) lambda handler
+To get started let's create a simple API Gateway Proxy (HTTP or REST) lambda handler. This will validate the request and the response with our predefined zod schemas.
 
 ```typescript
 import { api, res } from '@funcy/api'
 
-export const handler = api.handler<ResponseType, RequestType, PathType, QueryStringType>({
-  handler: async({ request, path, query }) = {
+export const handler = api.handler({
+  validation: {
+    type: 'zod',
+    request: MyRequest,
+    response: MyResponse,
+  },
+  handler: async({ request }) = {
     // request is the strongly typed request body
-    // path is the strongly typed url path
-    // query is the strongly typed query string
-    // responseType is the strongly typed response type
-    return res.ok(responseType)
+    // response is also validated and strongly typed
+    return res.ok(response)
   }
 })
 ```
@@ -111,7 +133,7 @@ export default api.create<AuthorizerType>()
 import { res } from '@funcy/api'
 import api from './base-api-handler.ts'
 
-export const handler = api<ResponseType, RequestType, PathType, QueryStringType>({
+export const handler = api({
   handler: async({ request, path, query, event, authorizer }) = {
     // request is the strongly typed request body
     // path is the strongly typed url path
@@ -132,9 +154,11 @@ Let's create CRUD handlers for the "Customer" domain, with request validation.
 import { api, res } from '@funcy/api'
 
 // create
-export const handler = api.handler<CreateCustomerResponse, CreateCustomerRequest>({
+export const handler = api.handler({
   validation: {
-    request: CreateCustomerRequestValidator
+    type: 'zod',
+    request: CreateCustomerRequest,
+    response: CreateCustomerResponse,
   },
   handler: async ({ request }) = {
     const response = await Customers.create(request)
@@ -143,7 +167,12 @@ export const handler = api.handler<CreateCustomerResponse, CreateCustomerRequest
 })
 
 // get
-export const handler = api.handler<GetCustomerResponse, never, GetCustomerPath>({
+export const handler = api.handler({
+  validation: {
+    type: 'zod',
+    path: GetResourcePath,
+    response: GetCustomerResponse,
+  },
   handler: async ({ request, path }) = {
     const response = await Customers.get(path.id)
     return res.ok(response)
@@ -151,9 +180,9 @@ export const handler = api.handler<GetCustomerResponse, never, GetCustomerPath>(
 })
 
 // list
-export const handler = api.handler<ListResponse<GetCustomerResponse>, never, any, ListQueryString>({
+export const handler = api.handler({
   validation: {
-    query: ListQueryStringValidator
+    query: ListQueryStringValidator,
   },
   handler: async ({ request, query }) = {
     const { skip, take } = query
@@ -163,9 +192,12 @@ export const handler = api.handler<ListResponse<GetCustomerResponse>, never, any
 })
 
 // update
-export const handler = api.handler<UpdateCustomerResponse, UpdateCustomerRequest, GetCustomerPath>({
+export const handler = api.handler({
   validation: {
-    request: UpdateCustomerRequestValidator
+    type: 'zod',
+    request: UpdateCustomerRequest,
+    response: UpdateCustomerResponse,
+    path: GetResourcePath,
   },
   handler: async ({ request, path }) = {
     const response = await Customers.update(path.id, request)
@@ -257,15 +289,13 @@ Koa
 
 ## Roadmap
 
-- Simplified CRUD helpers (with sensible defaults)
-- JSON schema validation
-- AJV validation
-- Support for legacy API Gateway proxy integration (< v2)
+- Support for other validators
+- Verify support for legacy API Gateway proxy integration (< v2)
+- Test coverage
 - Performance test comparison with nest.js, raw lambda, etc.
 - Other lambda integrations (s3, dynamo, etc)
 - hateoas middleware
 - router middleware for proxy+ calls
--
 
 ## Technologies
 
