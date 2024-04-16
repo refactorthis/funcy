@@ -1,9 +1,7 @@
 <p align="center">
-  <img src="docs/static/logo.jpg" width="200px" align="center" alt="funcy logo" />
-  <h1 align="center">funcy</h1>
+  <img src="./docs/static/logo.png" width="220px" align="center" alt="funcy logo" />
   <p align="center">
-    <br/>
-    TypeScript-first, functional interface for AWS lambda handlers
+    Strongly typed, best practice & simple functional interface for AWS lambda functions
     <br />
   </p>
 </p>
@@ -26,47 +24,48 @@
 
 <br />
 
-## Table of Contents
+## funcy
 
-- [Table of Contents](#table-of-contents)
+- [funcy](#funcy)
 - [Introduction](#introduction)
-- [Preview](#preview)
-- [Installation](#installation)
+  - [Preview](#preview)
 - [Getting Started](#getting-started)
-- [Examples](#examples)
-- [API](#api)
-- [Complementing Packages](#complementing-packages)
+  - [Installation](#installation)
+  - [Writing funcy Functions](#writing-funcy-functions)
+  - [Examples](#examples)
+- [API Definition](#api-definition)
 - [Performance Comparisons](#performance-comparisons)
 - [Roadmap](#roadmap)
-- [Technologies](#technologies)
+- [See Also](#see-also)
+  - [Complementary Packages](#complementary-packages)
+  - [Technologies](#technologies)
 
 ## Introduction
 
-**funcy** provides a fully-typed, functional interface for AWS lambda handlers. The perfect complement to serverless frameworks such as serverless.yml, SST.dev, SAM, etc.
+**funcy** provides a TypeScript-first (fully typed), best practice & simple functional interface for AWS lambda functions. The perfect complement to serverless frameworks such as the [serverless](https://www.serverless.com/framework), [SST](https://sst.dev), [SAM](https://aws.amazon.com/serverless/sam/), etc.
 
-It provides out-of-the-box serialisation/deserialisation to typed models to TypeScript models, validation, and handles common http concerns such as CORS, content negotiation, encoding, etc. in a simple interface.
+It provides out-of-the-box inferred typing of models, validation, and handles best-practice middleware concerns such as CORS, content negotiation, encoding, monitoring, etc. out of the box, in one simple interface.
 
 The key design principles of funcy are as follows:
 
-- Sensible Defaults - Best practice and sensible options by default. Get going straight away.
+- Sensible Defaults - Best practice and sensible options by default. Get going straight away without config.
 - Progressive Disclosure - We keep interfaces simple and abstracted. Everything should be customisable, but hidden by default. See [progressive disclosure](https://en.wikipedia.org/wiki/Progressive_disclosure).
 - All-In-One - Find everything you need by code-completion. No need to go searching on npm or google to install other packages, this is an all-in-one framework.
 - Performant - lazy loading, tree shaking, and profiling of pipelines.
-- Extensible - Add middy middleware to extend the pipeline where needed.
+- Extensible - Configurable, and options to extend the middy pipeline where needed.
 
-If you like lightweight lambda functions and don't want a full-blown framework like Nest.js, then this is for you.
+If you prefer lightweight lambda functions and don't want a full-blown framework (like Nest.js), then this is for you.
 
-## Preview
+### Preview
 
-The example below shows parsing, validating and creating a strongly-typed model for both request and response. You'll notice that the handler itself does not contain any parsing, validation or error handling logic, we adhere to the single-responsibility-principle here and handle all other aspects in middleware, configurable at either api or handler level.
+The example below shows parsing, validating and inferring a strongly-typed model for both request and response.
 
 ```typescript
 import { api, res } from '@funcy/api'
 
 // create customer handler
-export const create = api.handler({
-  validation: {
-    type: 'zod',
+export const create = api({
+  parser: {
     request: CreateCustomerRequest // zod schema,
     response: CreateCustomerResponse // zod schema,
   },
@@ -77,15 +76,19 @@ export const create = api.handler({
 })
 ```
 
-As you can see, the TypeScript type is inferred at compile time, allowing strong typing of all request and response parameters to your API.
+You'll notice that the handler itself does not contain any parsing, validation or error handling logic, we adhere to the single-responsibility-principle here and handle all other aspects in middleware, configurable at either api or handler level.
 
 ![example image](docs/static/example-strongly-typed.png)
+
+As you can see above, the TypeScript type is inferred at compile time, allowing strong typing of all request and response parameters to your API, almost by magic.
 
 funcy also has a full middleware pipeline, allowing you to control things like CORS, content negotiation, encoding, security header best practices, etc. all out of the box. All you need to do is ctrl+space to see the options. Options can either be set as default for the whole api, or overridden for each handler
 
 ![example image](docs/static/example-autocomplete.png)
 
-## Installation
+## Getting Started
+
+### Installation
 
 ```bash
 pnpm add @funcy/api
@@ -94,16 +97,15 @@ pnpm add @funcy/api
 #npm install --save-dev @funcy/api
 ```
 
-## Getting Started
+### Writing funcy Functions
 
 To get started let's create a simple API Gateway Proxy (HTTP or REST) lambda handler. This will validate the request and the response with our predefined zod schemas.
 
 ```typescript
 import { api, res } from '@funcy/api'
 
-export const handler = api.handler({
-  validation: {
-    type: 'zod',
+export const handler = api({
+  parser: {
     request: MyRequest,
     response: MyResponse,
   },
@@ -122,7 +124,9 @@ You can create your own api handlers using api-level defaults. For instance, let
 import { api } from '@funcy/api'
 
 // my authorizer struct
-interface AuthorizerType {}
+interface AuthorizerType {
+  jwt: { claims: { tenantId: 'string' } }
+}
 
 // Create this once for your API and share it
 export default api.create<AuthorizerType>()
@@ -146,7 +150,7 @@ export const handler = api({
 })
 ```
 
-## Examples
+### Examples
 
 Let's create CRUD handlers for the "Customer" domain, with request validation.
 
@@ -154,9 +158,8 @@ Let's create CRUD handlers for the "Customer" domain, with request validation.
 import { api, res } from '@funcy/api'
 
 // create
-export const handler = api.handler({
-  validation: {
-    type: 'zod',
+export const handler = api({
+  parser: {
     request: CreateCustomerRequest,
     response: CreateCustomerResponse,
   },
@@ -167,9 +170,8 @@ export const handler = api.handler({
 })
 
 // get
-export const handler = api.handler({
-  validation: {
-    type: 'zod',
+export const handler = api({
+  parser: {
     path: GetResourcePath,
     response: GetCustomerResponse,
   },
@@ -180,8 +182,8 @@ export const handler = api.handler({
 })
 
 // list
-export const handler = api.handler({
-  validation: {
+export const handler = api({
+  parser: {
     query: ListQueryStringValidator,
   },
   handler: async ({ request, query }) = {
@@ -192,9 +194,8 @@ export const handler = api.handler({
 })
 
 // update
-export const handler = api.handler({
-  validation: {
-    type: 'zod',
+export const handler = api({
+  parser: {
     request: UpdateCustomerRequest,
     response: UpdateCustomerResponse,
     path: GetResourcePath,
@@ -206,79 +207,9 @@ export const handler = api.handler({
 })
 ```
 
-## API
+## API Definition
 
-```typescript
-// create this once for your api
-const apiHandler = new api.create<AuthorizerType?, AWSEventType?, AWSResultType?>(defaults?: {
-    // see options section
-})
-
-// each handler
-export const handler = apiHandler<ResponseType, RequestType, PathType, QueryStringType>({
-  {
-  /**
-   * The strongly-typed lambda function handler
-   */
-  handler: ApiHandlerFunc<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent>
-
-  /**
-   * Validators
-   */
-  validation?: ZodValidation<TResponse, TRequest, TPath, TQuery>
-
-  /**
-   * HTTP options
-   */
-  http?: {
-    /**
-     * CORS options
-     */
-    cors?: CorsOptions
-
-    /**
-     * Security Headers
-     */
-    security?: SecurityOptions
-
-    /**
-     * Encoding options
-     */
-    encoding?: EncodingOptions
-
-    /**
-     * Content options
-     */
-    content?: {
-      /**
-       * Content header options for the request
-       */
-      request?: RequestContentOptions
-
-      /**
-       * Content response serializers for the response
-       */
-      response?: ResponseContentOptions
-    }
-  }
-
-  /**
-   * Used to interact with the underlying middy pipeline
-   */
-  middy?: {
-    /**
-     * Add the following middleware to the middy pipeline
-     */
-    extend?: middy.MiddlewareObj<TEvent, ApiResultV2<TResponse>>[]
-  }
-})
-```
-
-## Complementing Packages
-
-- [zod](https://github.com/colinhacks/zod) - a great Typescript-first validation framework, which can infer your DTO types automatically
-- [zod-to-openapi](https://github.com/asteasolutions/zod-to-openapi) - generate your Open API definition code-first from zod schemas.
-- [openapi-zod-client](https://github.com/astahmer/openapi-zod-client) - alternatively, generate your code from your design-first Open API definition
+// todo
 
 ## Performance Comparisons
 
@@ -297,7 +228,15 @@ Koa
 - hateoas middleware
 - router middleware for proxy+ calls
 
-## Technologies
+## See Also
+
+### Complementary Packages
+
+- [zod](https://github.com/colinhacks/zod) - a great Typescript-first validation framework, which can infer your DTO types automatically
+- [zod-to-openapi](https://github.com/asteasolutions/zod-to-openapi) - generate your Open API definition code-first from zod schemas.
+- [openapi-zod-client](https://github.com/astahmer/openapi-zod-client) - alternatively, generate your code from your design-first Open API definition
+
+### Technologies
 
 - [middy](https://github.com/middyjs/middy) - powers the funcy pipeline with it's extensible middleware framework.
 - [TypeScript](https://github.com/microsoft/TypeScript) - strong-typing is critical for maintainability and reducing bugs.

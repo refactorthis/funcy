@@ -4,11 +4,13 @@ import type {
   APIGatewayProxyEventQueryStringParameters,
   APIGatewayEventDefaultAuthorizerContext,
 } from 'aws-lambda'
+import pipeline from './middleware/api.pipeline'
 import { FuncyApiOptions, ApiResultV2 } from './types'
-import { middyPipeline } from './pipeline'
+
+// TODO remove usage of class.
 
 const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
-  logger: {
+  monitoring: {
     logLevel: 'info',
     logger: (message) => console.log(message),
     enableProfiling: false,
@@ -58,23 +60,10 @@ export class FuncyApi<
   }
 
   /**
-   * Wraps your lambda function with middy, zod validation and a strongly typed, functional interface
-   *
-   * @example
-   * export const handler = apiHandler<CreateCustomerResponse, CreateCustomerRequest>(async ({ request } => {
-   *     const customer = createCustomer(request)
-   *     return { statusCode: 200, body: customer }
-   * }
-   *
-   * @param TResponse the response type
-   * @param TRequest the request type
-   * @param TPath the path type
-   * @param TQuery the query type
-   * @param handler the lambda function handler
-   * @param opts options
+   * Makes your API funcy-er
    */
   handler = <
-    TResponse = void,
+    TResponse = any,
     TRequest = any,
     TPath = APIGatewayProxyEventPathParameters,
     TQuery = APIGatewayProxyEventQueryStringParameters,
@@ -82,8 +71,7 @@ export class FuncyApi<
     opts: FuncyApiOptions<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent>,
   ) => {
     const props = Object.create(this.opts, Object.getOwnPropertyDescriptors(opts ?? {}))
-
-    return middyPipeline<ApiResultV2<TResponse>, TEvent>(props).handler((event, context) => {
+    return pipeline<ApiResultV2<TResponse>, TEvent>(props).handler((event, context) => {
       // TODO hack - write proper type mappings for other use cases.
       const ev = event as APIGatewayProxyEventV2
 
@@ -102,4 +90,4 @@ export class FuncyApi<
 /**
  * Pre-built Api Handler using sensible defaults
  */
-export const funcy = new FuncyApi()
+export const api = new FuncyApi().handler

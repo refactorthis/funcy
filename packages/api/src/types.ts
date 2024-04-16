@@ -1,8 +1,28 @@
-import { APIGatewayProxyStructuredResultV2, Context } from 'aws-lambda'
 import { Options as CorsOptions } from '@middy/http-cors'
-import middy from '@middy/core'
+import { FuncyOptions } from '@funcy/core'
+import { APIGatewayProxyStructuredResultV2, Context } from 'aws-lambda'
 import z from 'zod'
-import { FuncyOptions } from '../../core/src/types'
+
+// allow void responses only if expecting void body type (if parsing a response type, then we shouldn't allow void)
+export type ApiResultV2<TBody> = TBody extends void ? void : ApiResultV2WithContent<TBody>
+export type ApiResultV2WithContent<TBody> = Omit<APIGatewayProxyStructuredResultV2, 'body'> & {
+  body: TBody | undefined
+}
+
+export type ApiHandlerFunc<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent> = ({
+  request,
+  query,
+  path,
+  event,
+}: {
+  request: TRequest
+  query: TQuery
+  path: TPath
+  event: TEvent
+  authorizer: TAuthorizer
+  context: Context
+}) => Promise<ApiResultV2<TResponse>> | ApiResultV2<TResponse>
+
 /**
  * Configuration options for funcy api handlers
  */
@@ -13,16 +33,48 @@ export interface FuncyApiOptions<
   TQuery = any,
   TAuthorizer = any,
   TEvent = any,
-> extends FuncyOptions {
+> extends FuncyOptions<TEvent, ApiResultV2<TResponse>> {
   /**
-   * The strongly-typed lambda function handler
+   * The strongly-typed lambda function handler. This is where your code belongs.
+   *
+   * @example
+   * ```typescript
+   * // create
+   * handler: async ({ request }) => {
+   *   const response = Customers.create(request)
+   *   return res.created(response)
+   * }
+   *
+   * // list
+   * handler: async ({ query, authorizer }) => {
+   *   const { skip, take } = query
+   *   const items = Customers.list(authorizer.jwt.claims.tenantId, skip, take)
+   *   return res.ok({ items })
+   * }
+   * ```
    */
   handler: ApiHandlerFunc<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent>
 
   /**
-   * Validators
+   * API Parser configuration
+   *
+   * This has two aims.
+   *  - infer the type of each input and output, so that they are strongly typed
+   *  - validate the input and output at runtime
+   *
+   * @example
+   * ```typescript
+   * const CustomerRequest = z.object({ title: z.string(), description: z.string() })
+   * const CustomerResponse = z.object({ id: z.string(), title: z.string(), description: z.string() })
+   *
+   * parser: {
+   *   request: CustomerRequest,
+   *   response: CustomerResponse,
+   *   path: z.object({ id: z.string() }),
+   * }
+   * ```
    */
-  validation?: ZodValidation<TResponse, TRequest, TPath, TQuery>
+  parser?: ZodParser<TResponse, TRequest, TPath, TQuery>
 
   /**
    * HTTP options
@@ -58,41 +110,12 @@ export interface FuncyApiOptions<
       response?: ResponseContentOptions
     }
   }
-
-  /**
-   * Used to interact with the underlying middy pipeline
-   */
-  middy?: {
-    /**
-     * Add the following middleware to the middy pipeline
-     */
-    extend?: middy.MiddlewareObj<TEvent, ApiResultV2<TResponse>>[]
-  }
 }
-
-export type ApiResultV2<TBody> = Omit<APIGatewayProxyStructuredResultV2, 'body'> & {
-  body: TBody
-}
-
-export type ApiHandlerFunc<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent> = ({
-  request,
-  query,
-  path,
-  event,
-}: {
-  request: TRequest
-  query: TQuery
-  path: TPath
-  event: TEvent
-  authorizer: TAuthorizer
-  context: Context
-}) => Promise<ApiResultV2<TResponse>>
 
 /**
- * Configuration for Zod validation
+ * Configuration for Zod
  */
-export type ZodValidation<TResponse, TRequest, TPath, TQuery> = {
-  type: 'zod'
+export type ZodParser<TResponse, TRequest, TPath, TQuery> = {
   request?: z.ZodSchema<TRequest>
   response?: z.ZodSchema<TResponse>
   path?: z.ZodSchema<TPath>

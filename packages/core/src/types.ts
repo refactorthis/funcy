@@ -1,13 +1,16 @@
+import middy from '@middy/core'
+
 /**
- * Funcy options base type
+ * Funcy common options
  */
-export interface FuncyOptions {
+export interface FuncyOptions<TEvent, TResponse> {
   /**
-   * Logger options
+   * Logging, Profiling & Metrics options
    */
-  logger?: {
+  monitoring?: {
     /**
      * Logger to use
+     * TODO: remove loglevel and make this have different functions for each level..
      *
      * @default console.log
      */
@@ -24,10 +27,40 @@ export interface FuncyOptions {
     /**
      * If true, will enable memory and stopwatch profiling of the pipeline.
      *
-     * NOTE this has a performance impact, so don't use this in production
-     *
      * @default false
      */
     enableProfiling?: boolean
+
+    /**
+     * Options for Cloudwatch Metrics
+     */
+    cloudWatchMetrics?: CloudwatchMetricsOptions
   }
+
+  /**
+   * Settings for the lambda function
+   */
+  function?: {
+    /**
+     * Settings for enabling a no-op warmup function for this lambda.
+     * @deprecated use provisioned concurrency instead
+     */
+    warmup?: WarmupOptions
+
+    /**
+     * Custom extensions to the middy pipeline.
+     * See https://middy.js.org/ for more information
+     */
+    pipeline?: middy.MiddlewareObj<TEvent, TResponse>[]
+  }
+}
+
+interface WarmupOptions {
+  isWarmingUp?: (event: any) => boolean
+  onWarmup?: (event: any) => void
+}
+
+interface CloudwatchMetricsOptions {
+  namespace?: string
+  dimensions?: Array<Record<string, string>>
 }

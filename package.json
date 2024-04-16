@@ -1,52 +1,32 @@
 {
-	"name": "funcy",
-	"version": "0.0.1",
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"preinstall": "npx -y only-allow pnpm",
-		"test": "vitest run",
-		"typecheck": "tsc -noEmit",
-		"lint": "eslint --cache .",
-		"format": "prettier --ignore-path .gitignore --write --cache ."
-	},
-	"devDependencies": {
-		"@tsconfig/node20": "^20.1.4",
-		"@types/airbnb__node-memwatch": "^2.0.3",
-		"@types/aws-lambda": "^8.10.136",
-		"@types/node": "^20.11.28",
-		"eslint": "^8.57.0",
-		"eslint-config-prettier": "^9.1.0",
-		"prettier": "^3.2.5",
-		"typescript": "^5.4.2",
-		"typescript-eslint": "^7.5.0",
-		"vitest": "^1.4.0"
-	},
-	"dependencies": {
-		"@airbnb/node-memwatch": "^2.0.0",
-		"@middy/core": "^5.3.2",
-		"@middy/error-logger": "^5.3.2",
-		"@middy/http-content-encoding": "^5.3.2",
-		"@middy/http-content-negotiation": "^5.3.2",
-		"@middy/http-cors": "^5.3.2",
-		"@middy/http-error-handler": "^5.3.2",
-		"@middy/http-event-normalizer": "^5.3.2",
-		"@middy/http-header-normalizer": "^5.3.2",
-		"@middy/http-json-body-parser": "^5.3.2",
-		"@middy/http-multipart-body-parser": "^5.3.2",
-		"@middy/http-response-serializer": "^5.3.2",
-		"@middy/http-security-headers": "^5.3.2",
-		"@middy/http-urlencode-body-parser": "^5.3.2",
-		"@middy/http-urlencode-path-parser": "^5.3.2",
-		"@middy/input-output-logger": "^5.3.2",
-		"@middy/util": "^5.3.2",
-		"zod": "^3.22.4"
-	},
-	"main": "index.ts",
-	"author": "refactorthis",
-	"license": "ISC",
-	"description": "**funcy** provides a performant, strongly typed, and functional interface for AWS lambda function handlers.",
-	"workspaces": [
-		"packages/*"
-	]
+  "name": "funcy",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "preinstall": "npx -y only-allow pnpm",
+    "test": "vitest run",
+    "typecheck": "tsc -noEmit",
+    "lint": "eslint --cache .",
+    "format": "prettier --ignore-path .gitignore --write --cache ."
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@types/airbnb__node-memwatch": "^2.0.3",
+    "@types/aws-lambda": "^8.10.136",
+    "@types/node": "^20.11.28",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2",
+    "typescript-eslint": "^7.5.0",
+    "vitest": "^1.4.0"
+  },
+  "main": "index.ts",
+  "author": "refactorthis",
+  "license": "ISC",
+  "description": "**funcy** provides a performant, strongly typed, and functional interface for AWS lambda function handlers.",
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -1,27 +1,43 @@
 import { Todo } from '@sst-api/core/todo'
-import { funcy, res } from '@funcy/api'
-import { CreateTodoRequest, TodoResponse, ListQuery } from './models'
+import { api, res } from '@funcy/api'
+import { CreateTodoRequest, GetTodoPath, ListQuery, ListTodoResponse, TodoResponse } from './models'
 
-export const create = funcy.handler({
-  validation: {
-    type: 'zod',
+export const create = api({
+  parser: {
     request: CreateTodoRequest,
-    response: TodoResponse,
   },
   handler: async ({ request }) => {
-    const todo = await Todo.create(request)
-    return res.ok(todo)
+    await Todo.create(request)
+    return res.created()
   },
 })
 
-export const list = funcy.handler({
-  validation: {
-    type: 'zod',
+export const get = api({
+  parser: {
+    path: GetTodoPath,
+    response: TodoResponse,
+  },
+  handler: async ({ path }) => {
+    const response = await Todo.get(path.id)
+    return res.ok(response)
+  },
+})
+
+export const list = api({
+  parser: {
     query: ListQuery,
+    response: ListTodoResponse,
   },
   handler: async ({ query }) => {
     const { skip, take } = query
-    const items = Todo.list(skip, take)
-    return res.ok({ items, skip, take })
+    const items = await Todo.list(skip, take)
+    return res.ok()
   },
+})
+
+export const remove = api({
+  parser: {
+    path: GetTodoPath,
+  },
+  handler: async ({ path }) => await Todo.remove(path.id),
 })

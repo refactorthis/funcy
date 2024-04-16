@@ -7,61 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@airbnb/node-memwatch':
-        specifier: ^2.0.0
-        version: 2.0.0
-      '@middy/core':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/error-logger':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-content-encoding':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-content-negotiation':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-cors':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-error-handler':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-event-normalizer':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-header-normalizer':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-json-body-parser':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-multipart-body-parser':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-response-serializer':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-security-headers':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-urlencode-body-parser':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/http-urlencode-path-parser':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/input-output-logger':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/util':
-        specifier: ^5.3.2
-        version: 5.3.2
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
     devDependencies:
       '@tsconfig/node20':
         specifier: ^20.1.4
@@ -129,6 +74,10 @@ importers:
         version: 1.5.0(@types/node@20.12.7)
 
   examples/sst-api/packages/functions:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@types/aws-lambda':
         specifier: ^8.10.137
@@ -148,6 +97,9 @@ importers:
       '@funcy/core':
         specifier: workspace:^
         version: link:../core
+      '@middy/cloudwatch-metrics':
+        specifier: ^5.3.2
+        version: 5.3.2
       '@middy/core':
         specifier: ^5.3.2
         version: 5.3.2
@@ -196,6 +148,9 @@ importers:
       '@middy/util':
         specifier: ^5.3.2
         version: 5.3.2
+      '@middy/warmup':
+        specifier: ^5.3.2
+        version: 5.3.2
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -218,12 +173,40 @@ importers:
       '@airbnb/node-memwatch':
         specifier: ^2.0.0
         version: 2.0.0
+      '@middy/cloudwatch-metrics':
+        specifier: ^5.3.2
+        version: 5.3.2
       '@middy/core':
+        specifier: ^5.3.2
+        version: 5.3.2
+      '@middy/error-logger':
+        specifier: ^5.3.2
+        version: 5.3.2
+      '@middy/input-output-logger':
         specifier: ^5.3.2
         version: 5.3.2
       '@middy/util':
         specifier: ^5.3.2
         version: 5.3.2
+      '@middy/warmup':
+        specifier: ^5.3.2
+        version: 5.3.2
+    devDependencies:
+      '@types/airbnb__node-memwatch':
+        specifier: ^2.0.3
+        version: 2.0.3
+      '@types/aws-lambda':
+        specifier: ^8.10.136
+        version: 8.10.137
+      '@types/node':
+        specifier: ^20.11.28
+        version: 20.12.7
+      vitest:
+        specifier: ^1.4.0
+        version: 1.5.0(@types/node@20.12.7)
+
+  packages/parser-zod:
+    dependencies:
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -1786,6 +1769,10 @@ packages:
       cloneable-readable: 3.0.0
     dev: false
 
+  /@datastructures-js/heap@4.3.3:
+    resolution: {integrity: sha512-UcUu/DLh/aM4W3C8zZfwxxm6/6FIZUlm3mcAXuNOCa6Aj4iizNvNXQyb8DjZQH2jKSQbMRyNlngP6TPimuGjpQ==}
+    dev: false
+
   /@envelop/core@3.0.6:
     resolution: {integrity: sha512-06t1xCPXq6QFN7W1JUEf68aCwYN0OUDNAIoJe7bAqhaoa2vn7NCcuX1VHkJ/OWpmElUgCsRO6RiBbIru1in0Ig==}
     dependencies:
@@ -2423,6 +2410,13 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /@middy/cloudwatch-metrics@5.3.2:
+    resolution: {integrity: sha512-sLuyS9Pa6SGx+Rw4VhHrja6i0uLBSX9fppnZ8ULhE9ruyK37tfMZceK1im9b8xvziFLDsw2mj1JJTbn4BVSZ4Q==}
+    engines: {node: '>=14'}
+    dependencies:
+      aws-embedded-metrics: 4.1.1
+    dev: false
+
   /@middy/core@5.3.2:
     resolution: {integrity: sha512-g1PonDsJI/t6DldRD/MijnE9kQBWYDZRfGkqJv/Dy+TXyTJmsmk6k/znx+RgqZYlpz1QodWi+6gzRsjPuvM8ew==}
     engines: {node: '>=18'}
@@ -2521,6 +2515,11 @@ packages:
 
   /@middy/util@5.3.2:
     resolution: {integrity: sha512-/Y5xxPwkQAigphYmJhThN6TGQCCFgybOYYK7SfiEr8cY7IhYnTys2uyTJR7ziS5jP82zNlgE9H5ZEj6IswHOKQ==}
+    engines: {node: '>=18'}
+    dev: false
+
+  /@middy/warmup@5.3.2:
+    resolution: {integrity: sha512-bCMyPHNHdVmhX9lv8Z9Tg7zHJX/GreuUt+dTphor5SbvHE1+Tjoj2AghgfeB0roXlKnQRzQK4v5qYqmPjh7UJw==}
     engines: {node: '>=18'}
     dev: false
 
@@ -3875,6 +3874,13 @@ packages:
       - supports-color
       - utf-8-validate
     dev: true
+
+  /aws-embedded-metrics@4.1.1:
+    resolution: {integrity: sha512-AvdFPLyib3YaFtlzMxkPfFwOtwZ6tbGENKFmG0x1MUm0l8M8BKyNJ5qQeP4ma/FNj8+/cvk9yG5lsLw/pjFjnQ==}
+    engines: {node: '>=10.0.0'}
+    dependencies:
+      '@datastructures-js/heap': 4.3.3
+    dev: false
 
   /aws-iot-device-sdk@2.2.13:
     resolution: {integrity: sha512-rUR68vJxna5q0HSvBFy70QD0kFa91H8mQU2Jdor0JpNxmfNaOhQoiGCcgrZAxR69xY1kGHs+JzWOqqVtAfL0+A==}

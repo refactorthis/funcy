@@ -23,7 +23,7 @@ export async function create(dto: any) {
   return todo
 }
 
-export function list(skip: number = 0, take: number = 20) {
+export async function list(skip: number = 0, take: number = 20) {
   return Array(50)
     .fill(0)
     .map((_, index) => ({
@@ -31,4 +31,15 @@ export function list(skip: number = 0, take: number = 20) {
       title: 'Todo #' + index,
     }))
     .slice(skip, skip + take)
+}
+
+export async function get(id: string) {
+  return {
+    id,
+    title: 'todo',
+  }
+}
+
+export async function remove(id: string) {
+  // remove from database
 }

@@ -13,12 +13,14 @@ import httpUrlencodeBodyParserMiddleware from '@middy/http-urlencode-body-parser
 import httpResponseSerializerMiddleware from '@middy/http-response-serializer'
 import httpSecurityHeadersMiddleware from '@middy/http-security-headers'
 import httpUrlencodePathParametersParserMiddleware from '@middy/http-urlencode-path-parser'
-import { FuncyApiOptions } from './types'
-import middyZodValidator from '../../middy-zod-validator/src/middy-zod-validator'
-import { profilingPlugin } from '../../core/src/debug'
+import warmupMiddleware from '@middy/warmup'
+import cloudWatchMetricsMiddleware from '@middy/cloudwatch-metrics'
+import profiler from '@funcy/core/src/middleware/profiler.plugin'
+import { FuncyApiOptions } from '../types'
+import middyZodValidator from './middy-zod-validator'
 
-export const middyPipeline = <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
-  const logger = opts?.logger?.logger ?? console.log
+export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
+  const logger = opts?.monitoring?.logger ?? console.log
 
   let pipe = middy<TEvent, TResponseStruct>(
     {
@@ -28,7 +30,7 @@ export const middyPipeline = <TResponseStruct, TEvent>(opts?: FuncyApiOptions) =
         }
       },
     },
-    opts?.logger?.enableProfiling ? profilingPlugin({ logger }) : undefined,
+    opts?.monitoring?.enableProfiling ? profiler({ logger }) : undefined,
   )
     .use(httpEventNormalizerMiddleware())
     .use(httpHeaderNormalizerMiddleware())
@@ -39,22 +41,15 @@ export const middyPipeline = <TResponseStruct, TEvent>(opts?: FuncyApiOptions) =
     .use(httpUrlencodeBodyParserMiddleware({ disableContentTypeError: true }))
     .use(httpSecurityHeadersMiddleware(opts?.http?.security))
     .use(httpCorsMiddleware(opts?.http?.cors))
-    .use(httpContentEncodingMiddleware(opts?.http?.encoding)) // check
+    .use(httpContentEncodingMiddleware(opts?.http?.encoding))
     .use(httpResponseSerializerMiddleware(opts?.http?.content?.response))
+    .use(warmupMiddleware(opts?.function?.warmup))
+    .use(cloudWatchMetricsMiddleware(opts?.monitoring?.cloudWatchMetrics))
 
-  if (opts?.logger?.logLevel === 'debug') {
-    pipe.use(inputOutputLoggerMiddleware({ logger }))
-  }
-
-  if (opts?.validation?.type === 'zod') {
-    pipe.use(
-      middyZodValidator(opts?.validation.request, opts?.validation.path, opts?.validation.query),
-    )
-  }
-
-  if (opts?.middy?.extend) {
-    opts.middy.extend.forEach((p) => pipe.use(p))
-  }
+  if (opts?.monitoring?.logLevel === 'debug') pipe.use(inputOutputLoggerMiddleware({ logger }))
+  if (opts?.parser)
+    pipe.use(middyZodValidator(opts?.parser.request, opts?.parser?.path, opts?.parser.query))
+  if (opts?.function?.pipeline) opts?.function?.pipeline.forEach((p) => pipe.use(p))
 
   pipe.use(errorLoggerMiddleware({ logger })).use(httpErrorHandlerMiddleware({ logger }))
   return pipe

@@ -41,6 +41,10 @@ importers:
         version: 1.5.0(@types/node@20.12.7)
 
   packages/functions:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@types/aws-lambda':
         specifier: ^8.10.137

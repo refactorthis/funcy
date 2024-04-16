@@ -4,7 +4,7 @@ const defaults = {
   logger: console.log,
 }
 
-export const profilingPlugin = (opts = {}) => {
+export default (opts = {}) => {
   const { logger } = { ...defaults, ...opts }
   const store = new Map<string, any>()
 
