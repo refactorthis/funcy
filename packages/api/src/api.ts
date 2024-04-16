@@ -12,7 +12,8 @@ import { FuncyApiOptions, ApiResultV2 } from './types'
 const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
   monitoring: {
     logLevel: 'info',
-    logger: (message) => console.log(message),
+    logger: console,
+    cloudWatchMetrics: false,
     enableProfiling: false,
   },
   http: {

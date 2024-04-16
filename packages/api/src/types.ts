@@ -82,16 +82,22 @@ export interface FuncyApiOptions<
   http?: {
     /**
      * CORS options
+     *
+     * See https://middy.js.org/docs/middlewares/http-cors
      */
     cors?: CorsOptions
 
     /**
      * Security Headers
+     *
+     * See https://middy.js.org/docs/middlewares/http-security-headers
      */
     security?: SecurityOptions
 
     /**
      * Encoding options
+     *
+     * See https://middy.js.org/docs/middlewares/http-content-encoding
      */
     encoding?: EncodingOptions
 
@@ -101,11 +107,15 @@ export interface FuncyApiOptions<
     content?: {
       /**
        * Content header options for the request
+       *
+       * See https://middy.js.org/docs/middlewares/http-content-negotiation
        */
       request?: RequestContentOptions
 
       /**
        * Content response serializers for the response
+       *
+       * See https://middy.js.org/docs/middlewares/http-response-serializer
        */
       response?: ResponseContentOptions
     }

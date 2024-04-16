@@ -20,7 +20,7 @@ import { FuncyApiOptions } from '../types'
 import middyZodValidator from './middy-zod-validator'
 
 export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
-  const logger = opts?.monitoring?.logger ?? console.log
+  const logger = opts?.monitoring?.logger ?? console
 
   let pipe = middy<TEvent, TResponseStruct>(
     {
@@ -33,7 +33,11 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
     opts?.monitoring?.enableProfiling ? profiler({ logger }) : undefined,
   )
     .use(httpEventNormalizerMiddleware())
-    .use(httpHeaderNormalizerMiddleware())
+    .use(
+      httpHeaderNormalizerMiddleware({
+        defaultHeaders: { 'content-type': 'application/json', accept: 'application/json' },
+      }),
+    )
     .use(httpUrlencodePathParametersParserMiddleware())
     .use(httpContentNegotiationMiddleware(opts?.http?.content?.request))
     .use(httpJsonBodyParserMiddleware({ disableContentTypeError: true }))
@@ -44,13 +48,20 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
     .use(httpContentEncodingMiddleware(opts?.http?.encoding))
     .use(httpResponseSerializerMiddleware(opts?.http?.content?.response))
     .use(warmupMiddleware(opts?.function?.warmup))
-    .use(cloudWatchMetricsMiddleware(opts?.monitoring?.cloudWatchMetrics))
 
-  if (opts?.monitoring?.logLevel === 'debug') pipe.use(inputOutputLoggerMiddleware({ logger }))
+  if (opts?.monitoring?.cloudWatchMetrics)
+    pipe.use(cloudWatchMetricsMiddleware(opts?.monitoring?.cloudWatchMetrics))
+
+  if (opts?.monitoring?.logLevel === 'trace')
+    pipe.use(inputOutputLoggerMiddleware({ logger: logger.trace }))
+
   if (opts?.parser)
     pipe.use(middyZodValidator(opts?.parser.request, opts?.parser?.path, opts?.parser.query))
+
   if (opts?.function?.pipeline) opts?.function?.pipeline.forEach((p) => pipe.use(p))
 
-  pipe.use(errorLoggerMiddleware({ logger })).use(httpErrorHandlerMiddleware({ logger }))
+  pipe
+    .use(errorLoggerMiddleware({ logger: logger.error }))
+    .use(httpErrorHandlerMiddleware({ logger: logger.error }))
   return pipe
 }
