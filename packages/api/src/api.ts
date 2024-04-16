@@ -4,8 +4,9 @@ import type {
   APIGatewayProxyEventQueryStringParameters,
   APIGatewayEventDefaultAuthorizerContext,
 } from 'aws-lambda'
-import pipeline from './middleware/api.pipeline'
+import pipeline from './middleware/api-pipeline'
 import { FuncyApiOptions, ApiResultV2 } from './types'
+import { deepMerge } from '../../core/src/utility'
 
 // TODO remove usage of class.
 
@@ -15,6 +16,9 @@ const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
     logger: console,
     cloudWatchMetrics: false,
     enableProfiling: false,
+  },
+  parser: {
+    validateResponses: 'error',
   },
   http: {
     content: {
@@ -54,10 +58,10 @@ export class FuncyApi<
   TAuthorizer = APIGatewayEventDefaultAuthorizerContext,
   TEvent = APIGatewayProxyEventV2,
 > {
-  private readonly opts
+  private readonly opts: Omit<FuncyApiOptions<any, any, any, any, TAuthorizer, TEvent>, 'handler'>
 
   constructor(opts?: Omit<FuncyApiOptions<any, any, any, any, TAuthorizer, TEvent>, 'handler'>) {
-    this.opts = Object.create(defaultFuncyOptions, Object.getOwnPropertyDescriptors(opts ?? {}))
+    this.opts = deepMerge({}, defaultFuncyOptions, opts ?? {})
   }
 
   /**

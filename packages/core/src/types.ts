@@ -13,12 +13,7 @@ export interface FuncyOptions<TEvent, TResponse> {
      *
      * @default console
      */
-    logger?: {
-      trace: (message: any) => void
-      info: (message: any) => void
-      warn: (message: any) => void
-      error: (message: any) => void
-    }
+    logger?: Logger
 
     /**
      * The log level.
@@ -71,7 +66,20 @@ export interface FuncyOptions<TEvent, TResponse> {
      * See https://middy.js.org/ for more information
      */
     middleware?: middy.MiddlewareObj<TEvent, TResponse>[]
+
+    /**
+     * Error handler
+     * // TODO
+     */
+    onError: (error: any) => void
   }
+}
+
+export interface Logger {
+  trace: (message: any) => void
+  info: (message: any) => void
+  warn: (message: any) => void
+  error: (message: any) => void
 }
 
 interface WarmupOptions {

@@ -17,7 +17,7 @@ import warmupMiddleware from '@middy/warmup'
 import cloudWatchMetricsMiddleware from '@middy/cloudwatch-metrics'
 import profiler from '@funcy/core/src/middleware/profiler.plugin'
 import { FuncyApiOptions } from '../types'
-import middyZodValidator from './middy-zod-validator'
+import validator from './validator-middleware'
 
 export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   const logger = opts?.monitoring?.logger ?? console
@@ -33,11 +33,7 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
     opts?.monitoring?.enableProfiling ? profiler({ logger }) : undefined,
   )
     .use(httpEventNormalizerMiddleware())
-    .use(
-      httpHeaderNormalizerMiddleware({
-        defaultHeaders: { 'content-type': 'application/json', accept: 'application/json' },
-      }),
-    )
+    .use(httpHeaderNormalizerMiddleware())
     .use(httpUrlencodePathParametersParserMiddleware())
     .use(httpContentNegotiationMiddleware(opts?.http?.content?.request))
     .use(httpJsonBodyParserMiddleware({ disableContentTypeError: true }))
@@ -55,10 +51,8 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   if (opts?.monitoring?.logLevel === 'trace')
     pipe.use(inputOutputLoggerMiddleware({ logger: logger.trace }))
 
-  if (opts?.parser)
-    pipe.use(middyZodValidator(opts?.parser.request, opts?.parser?.path, opts?.parser.query))
-
-  if (opts?.function?.pipeline) opts?.function?.pipeline.forEach((p) => pipe.use(p))
+  if (opts?.parser) pipe.use(validator({ parser: opts?.parser }))
+  if (opts?.function?.middleware) opts?.function?.middleware.forEach((p) => pipe.use(p))
 
   pipe
     .use(errorLoggerMiddleware({ logger: logger.error }))

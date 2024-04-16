@@ -29,9 +29,9 @@ export const list = api({
     response: ListTodoResponse,
   },
   handler: async ({ query }) => {
-    const { skip, take } = query
+    const { skip = 0, take = 20 } = query
     const items = await Todo.list(skip, take)
-    return res.ok()
+    return res.ok({ items, skip, take })
   },
 })
 

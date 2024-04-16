@@ -1,5 +1,13 @@
 # Contributing
 
+The key design principles of funcy are as follows:
+
+- Sensible Defaults - Best practice and sensible options by default. Get going straight away without config.
+- Progressive Disclosure - We keep interfaces simple and abstracted. Everything should be customisable, but hidden by default. See [progressive disclosure](https://en.wikipedia.org/wiki/Progressive_disclosure).
+- All-In-One - Find everything you need by code-completion via the one interface.
+- Performant - lazy loading, tree shaking, and profiling of pipelines.
+- Extensible - Configurable, and options to extend the middy pipeline where needed.
+
 ## Getting Started
 
 This repository enforces pnpm usage. You must [install pnpm](https://pnpm.io/installation) to use this repository.

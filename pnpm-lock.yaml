@@ -151,9 +151,6 @@ importers:
       '@middy/warmup':
         specifier: ^5.3.2
         version: 5.3.2
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
     devDependencies:
       '@types/airbnb__node-memwatch':
         specifier: ^2.0.3
@@ -173,43 +170,12 @@ importers:
       '@airbnb/node-memwatch':
         specifier: ^2.0.0
         version: 2.0.0
-      '@middy/cloudwatch-metrics':
-        specifier: ^5.3.2
-        version: 5.3.2
       '@middy/core':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/error-logger':
-        specifier: ^5.3.2
-        version: 5.3.2
-      '@middy/input-output-logger':
         specifier: ^5.3.2
         version: 5.3.2
       '@middy/util':
         specifier: ^5.3.2
         version: 5.3.2
-      '@middy/warmup':
-        specifier: ^5.3.2
-        version: 5.3.2
-    devDependencies:
-      '@types/airbnb__node-memwatch':
-        specifier: ^2.0.3
-        version: 2.0.3
-      '@types/aws-lambda':
-        specifier: ^8.10.136
-        version: 8.10.137
-      '@types/node':
-        specifier: ^20.11.28
-        version: 20.12.7
-      vitest:
-        specifier: ^1.4.0
-        version: 1.5.0(@types/node@20.12.7)
-
-  packages/parser-zod:
-    dependencies:
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
     devDependencies:
       '@types/airbnb__node-memwatch':
         specifier: ^2.0.3

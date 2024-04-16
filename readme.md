@@ -44,17 +44,13 @@
 
 **funcy** provides a TypeScript-first (fully typed), best practice & simple functional interface for AWS lambda functions. The perfect complement to serverless frameworks such as the [serverless](https://www.serverless.com/framework), [SST](https://sst.dev), [SAM](https://aws.amazon.com/serverless/sam/), etc.
 
-It provides out-of-the-box inferred typing of models, validation, and handles best-practice middleware concerns such as CORS, content negotiation, encoding, monitoring, etc. out of the box, in one simple interface.
+Features:
 
-The key design principles of funcy are as follows:
+- Strongly typed request and response models (inferred or explicit)
+- Best practices pipeline with sensible defaults for CORS, security headers, encoding, error handling, metrics, logging, and profiling out of the box.
+- A fully-configurable and batteries-included interface; everything you need is an ctrl+space away.
 
-- Sensible Defaults - Best practice and sensible options by default. Get going straight away without config.
-- Progressive Disclosure - We keep interfaces simple and abstracted. Everything should be customisable, but hidden by default. See [progressive disclosure](https://en.wikipedia.org/wiki/Progressive_disclosure).
-- All-In-One - Find everything you need by code-completion. No need to go searching on npm or google to install other packages, this is an all-in-one framework.
-- Performant - lazy loading, tree shaking, and profiling of pipelines.
-- Extensible - Configurable, and options to extend the middy pipeline where needed.
-
-If you prefer lightweight lambda functions and don't want a full-blown framework (like Nest.js), then this is for you.
+If you prefer lightweight lambda functions and don't want a full-blown framework (like NestJS), then this is for you.
 
 ### Preview
 
@@ -62,12 +58,13 @@ The example below shows parsing, validating and inferring a strongly-typed model
 
 ```typescript
 import { api, res } from '@funcy/api'
+import { CreateCustomerRequest, CreateCustomerResponse } from './dtos'
 
 // create customer handler
 export const create = api({
   parser: {
-    request: CreateCustomerRequest // zod schema,
-    response: CreateCustomerResponse // zod schema,
+    request: CreateCustomerRequest, // zod schema
+    response: CreateCustomerResponse, // zod schema
   },
   handler: async ({ request }) = {
     const response = await Customer.create(request)
@@ -90,11 +87,17 @@ funcy also has a full middleware pipeline, allowing you to control things like C
 
 ### Installation
 
-```bash
+```sh
 pnpm add @funcy/api
 #bun add @funcy/api
 #yarn add @funcy/api
 #npm install --save-dev @funcy/api
+```
+
+If you haven't already installed your validation framework, add one to your package. We strongly recommend zod.
+
+```sh
+pnpm add zod
 ```
 
 ### Writing funcy Functions
@@ -103,11 +106,12 @@ To get started let's create a simple API Gateway Proxy (HTTP or REST) lambda han
 
 ```typescript
 import { api, res } from '@funcy/api'
+import { MyRequest, MyResponse } from './dtos'
 
 export const handler = api({
   parser: {
-    request: MyRequest,
-    response: MyResponse,
+    request: MyRequest, // zod schema
+    response: MyResponse, // zod schema
   },
   handler: async({ request }) = {
     // request is the strongly typed request body
@@ -120,7 +124,7 @@ export const handler = api({
 You can create your own api handlers using api-level defaults. For instance, let's use a custom authorizer context, with strongly typed claims, for use across all of our api.
 
 ```typescript
-// base-api-handler.ts
+// my-api.ts
 import { api } from '@funcy/api'
 
 // my authorizer struct
@@ -135,15 +139,20 @@ export default api.create<AuthorizerType>()
 ```typescript
 // customers-create.ts
 import { res } from '@funcy/api'
-import api from './base-api-handler.ts'
+import api from './my-api'
 
 export const handler = api({
-  handler: async({ request, path, query, event, authorizer }) = {
+  parser: {
+    request: MyRequestSchema
+    response: MyResponseSchema
+    path: PathSchema
+    query: QueryStringSchema
+  },
+  handler: async({ request, path, query, authorizer }) = {
     // request is the strongly typed request body
     // path is the strongly typed url path
     // query is the strongly typed query string
-    // event is the raw AWS API proxy event, in case you need it
-    // authorizer is the authorizer context as specified in base-api-handler.ts, including strongly typed claims
+    // authorizer is the strongly typed authorizer context as specified in my-api.ts
     // responseType is the strongly typed response type
     return res.ok(responseType)
   }
@@ -238,6 +247,6 @@ Koa
 
 ### Technologies
 
-- [middy](https://github.com/middyjs/middy) - powers the funcy pipeline with it's extensible middleware framework.
+- [middy.js](https://github.com/middyjs/middy) - powers the funcy pipeline with it's extensible middleware framework.
 - [TypeScript](https://github.com/microsoft/TypeScript) - strong-typing is critical for maintainability and reducing bugs.
 - [zod](https://github.com/colinhacks/zod) - Developer-friendly, TypeScript validation framework

@@ -1,7 +1,7 @@
 import { Options as CorsOptions } from '@middy/http-cors'
 import { FuncyOptions } from '@funcy/core'
 import { APIGatewayProxyStructuredResultV2, Context } from 'aws-lambda'
-import z from 'zod'
+import { ApiParser } from './parsers'
 
 // allow void responses only if expecting void body type (if parsing a response type, then we shouldn't allow void)
 export type ApiResultV2<TBody> = TBody extends void ? void : ApiResultV2WithContent<TBody>
@@ -74,7 +74,7 @@ export interface FuncyApiOptions<
    * }
    * ```
    */
-  parser?: ZodParser<TResponse, TRequest, TPath, TQuery>
+  parser?: ApiParser<TResponse, TRequest, TPath, TQuery>
 
   /**
    * HTTP options
@@ -120,16 +120,6 @@ export interface FuncyApiOptions<
       response?: ResponseContentOptions
     }
   }
-}
-
-/**
- * Configuration for Zod
- */
-export type ZodParser<TResponse, TRequest, TPath, TQuery> = {
-  request?: z.ZodSchema<TRequest>
-  response?: z.ZodSchema<TResponse>
-  path?: z.ZodSchema<TPath>
-  query?: z.ZodSchema<TQuery>
 }
 
 // NOTE: Not exported from middy packages
