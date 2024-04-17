@@ -9,7 +9,7 @@
     "test:watch": "vitest --ui",
     "typecheck": "pnpm run -r typecheck",
     "lint": "eslint --cache ./packages/",
-    "format": "prettier --ignore-path .gitignore --write --cache ."
+    "format": "prettier --write --cache ."
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
