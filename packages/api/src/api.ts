@@ -88,7 +88,7 @@ export const createApi = <
         query: ev.queryStringParameters as TQuery,
         path: ev.pathParameters as TPath,
         event: ev as TEvent,
-        authorizer: ev.requestContext?.authorizer as TAuthorizer,
+        authorizer: (ev.requestContext as any)?.authorizer as TAuthorizer,
         context,
       })
     })

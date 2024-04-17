@@ -2,7 +2,7 @@ import { MiddlewareObj, Request } from '@middy/core'
 import { createError } from '@middy/util'
 import { APIGatewayProxyEventV2, Context } from 'aws-lambda'
 import { ApiParser } from '../parsers'
-import { Logger } from 'packages/core/src/types'
+import { Logger } from '@funcy/core'
 
 const defaults = {
   logger: console,
@@ -39,7 +39,9 @@ export default <TResponse, TRequest, TPath, TQuery>(opts?: {
         )
       }
     },
-    after: async (request: Request<APIGatewayProxyEventV2, any, Error, Context, {}>) => {
+    after: async (
+      request: Request<APIGatewayProxyEventV2, any, Error, Context, Record<string, unknown>>,
+    ) => {
       if (!parser?.response || parser.validateResponses === 'never') return
 
       try {

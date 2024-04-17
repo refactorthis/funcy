@@ -22,7 +22,7 @@ import validator from './validator-middleware'
 export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   const logger = opts?.monitoring?.logger?.() ?? console
 
-  let pipe = middy<TEvent, TResponseStruct>(
+  const pipe = middy<TEvent, TResponseStruct>(
     {
       timeoutEarlyResponse: () => {
         return {

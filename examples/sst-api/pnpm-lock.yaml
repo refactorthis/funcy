@@ -42,6 +42,9 @@ importers:
 
   packages/functions:
     dependencies:
+      '@funcy/api':
+        specifier: link:../../../../packages/api
+        version: link:../../../../packages/api
       zod:
         specifier: ^3.22.4
         version: 3.22.4

@@ -1,1 +1,1 @@
-export { FuncyOptions } from './src/types'
+export { FuncyOptions, Logger } from './src/types'

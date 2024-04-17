@@ -1,6 +1,7 @@
-import { createEventBuilder, ZodValidator } from "sst/node/event-bus";
+import { createEventBuilder, ZodValidator } from 'sst/node/event-bus'
 
 export const event = createEventBuilder({
-  bus: "bus",
+  // @ts-expect-error
+  bus: 'bus',
   validator: ZodValidator,
-});
+})

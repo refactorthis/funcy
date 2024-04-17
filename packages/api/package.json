@@ -10,10 +10,10 @@
   },
   "devDependencies": {
     "@types/airbnb__node-memwatch": "^2.0.3",
-    "@types/aws-lambda": "^8.10.136",
+    "@types/aws-lambda": "^8.10.137",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^20.11.28",
-    "vitest": "^1.4.0",
+    "@types/node": "^20.12.7",
+    "vitest": "^1.5.0",
     "zod": "^3.22.4"
   },
   "dependencies": {

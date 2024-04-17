@@ -43,7 +43,7 @@ describe('options', () => {
       },
     })
 
-    const fn = api({
+    api({
       http: {
         cors: {
           origins: ['one.com', 'two.com'],
