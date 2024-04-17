@@ -1,4 +1,3 @@
-// vitest.config.ts
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -6,6 +5,7 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
       reporter: ['html', 'json-summary'],
+      include: ['packages/**/*.ts'],
     },
   },
 })

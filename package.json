@@ -8,8 +8,9 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest --ui",
     "typecheck": "pnpm run -r typecheck",
-    "lint": "eslint --cache ./packages/",
-    "format": "prettier --write --cache ."
+    "lint": "eslint --cache ./packages/ && prettier --check .",
+    "format": "prettier --write --cache .",
+    "ci": "pnpm run typecheck && pnpm run lint && pnpm run test"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
@@ -28,7 +29,7 @@
   "main": "index.ts",
   "author": "refactorthis",
   "license": "ISC",
-  "description": "**funcy** provides a performant, strongly typed, and functional interface for AWS lambda function handlers.",
+  "description": "**funcy** provides a simple, strongly typed, and comprehensive toolkit for AWS lambda functions.",
   "workspaces": [
     "packages/*"
   ]
