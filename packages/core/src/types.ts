@@ -27,6 +27,7 @@ export interface FuncyOptions<TEvent, TResponse> {
 
     /**
      * If true, will enable memory and stopwatch profiling of the pipeline.
+     *
      * @default false
      */
     enableProfiling?: boolean

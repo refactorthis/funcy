@@ -9,7 +9,6 @@
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
-    "@types/airbnb__node-memwatch": "^2.0.3",
     "@types/aws-lambda": "^8.10.137",
     "@types/lodash.merge": "^4.6.9",
     "@types/node": "^20.12.7",

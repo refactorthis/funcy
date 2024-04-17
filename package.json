@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
-    "@types/airbnb__node-memwatch": "^2.0.3",
     "@types/aws-lambda": "^8.10.137",
     "@types/node": "^20.12.7",
     "@vitest/coverage-istanbul": "^1.5.0",

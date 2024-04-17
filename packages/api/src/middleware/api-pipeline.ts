@@ -15,23 +15,21 @@ import httpSecurityHeadersMiddleware from '@middy/http-security-headers'
 import httpUrlencodePathParametersParserMiddleware from '@middy/http-urlencode-path-parser'
 import warmupMiddleware from '@middy/warmup'
 import cloudWatchMetricsMiddleware from '@middy/cloudwatch-metrics'
-import profiler from '@funcy/core/src/middleware/profiler.plugin'
+import { profiler } from '@funcy/core'
 import { FuncyApiOptions } from '../types'
 import validator from './validator-middleware'
 
 export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   const logger = opts?.monitoring?.logger?.() ?? console
 
-  const pipe = middy<TEvent, TResponseStruct>(
-    {
-      timeoutEarlyResponse: () => {
-        return {
-          statusCode: 408,
-        }
-      },
+  const pipe = middy<TEvent, TResponseStruct>({
+    ...(opts?.monitoring?.enableProfiling ? profiler({ logger }) : {}),
+    timeoutEarlyResponse: () => {
+      return {
+        statusCode: 408,
+      }
     },
-    opts?.monitoring?.enableProfiling ? profiler({ logger }) : undefined,
-  )
+  })
     .use(httpEventNormalizerMiddleware())
     .use(httpHeaderNormalizerMiddleware())
     .use(httpUrlencodePathParametersParserMiddleware())
