@@ -45,7 +45,9 @@ export default <TResponse, TRequest, TPath, TQuery>(opts?: {
       try {
         await validate(parser.response, request.response.body, ['response'])
       } catch (error: any) {
-        if (parser.validateResponses === 'error') {
+        if (parser.validateResponses === 'warn') {
+          logger.warn(new Error('WARN: Response object failed validation', { cause: error }))
+        } else if (parser.validateResponses === 'error') {
           throw createError(
             500,
             JSON.stringify({
@@ -54,10 +56,9 @@ export default <TResponse, TRequest, TPath, TQuery>(opts?: {
             }),
             {
               cause: error,
+              expose: true, // TODO do we want to expose these details?
             },
           )
-        } else {
-          logger.warn(error)
         }
       }
     },

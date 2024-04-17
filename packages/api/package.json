@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
@@ -12,7 +13,8 @@
     "@types/aws-lambda": "^8.10.136",
     "@types/lodash.merge": "^4.6.9",
     "@types/node": "^20.11.28",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "zod": "^3.22.4"
   },
   "dependencies": {
     "@funcy/core": "workspace:^",
@@ -36,8 +38,7 @@
     "@middy/warmup": "^5.3.2",
     "lodash.merge": "^4.6.2"
   },
-  "main": "index.ts",
   "author": "refactorthis",
   "license": "ISC",
-  "description": "**funcy** provides a performant, strongly typed, and functional interface for AWS lambda function handlers. If you like lightweight functions powered by middy, and don't want a full-blown MV* framework like Nest.js, then this is for you."
+  "description": "**funcy** provides a performant, strongly typed, and functional interface for AWS lambda functions."
 }

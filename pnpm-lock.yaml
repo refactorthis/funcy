@@ -170,6 +170,9 @@ importers:
       vitest:
         specifier: ^1.4.0
         version: 1.5.0(@types/node@20.12.7)
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
 
   packages/core:
     dependencies:
