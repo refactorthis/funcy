@@ -6,9 +6,7 @@ import type {
 } from 'aws-lambda'
 import pipeline from './middleware/api-pipeline'
 import { FuncyApiOptions, ApiResultV2 } from './types'
-import { deepMerge } from '../../core/src/utility'
-
-// TODO remove usage of class.
+import merge from 'lodash.merge'
 
 const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
   monitoring: {
@@ -42,11 +40,15 @@ const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
  * Builds an api handler with specified types and options
  *
  * @example
- * const apiHandler = ApiHandlerBuilder<MyCustomAuthorizer, APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2>({
- *     middyPipeline: myCustomMiddyPipeline
+ * const api = createApi<MyCustomAuthorizer>({
+ *   http: {
+ *     cors: {
+ *       allow: ["*"]
+ *     }
+ *   }
  * })
  *
- * export const handler = apiHandler(async ({ request } => {})
+ * export const handler = api(async ({ request } => {})
  *
  * @param TAuthorizer The struct of the authorizer
  * @param TEvent The struct of the event
@@ -54,20 +56,20 @@ const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
  * @param opts default options for all handlers
  * @returns The api handler wrapper function
  */
-export class FuncyApi<
+export const createApi = <
   TAuthorizer = APIGatewayEventDefaultAuthorizerContext,
   TEvent = APIGatewayProxyEventV2,
-> {
-  private readonly opts: Omit<FuncyApiOptions<any, any, any, any, TAuthorizer, TEvent>, 'handler'>
-
-  constructor(opts?: Omit<FuncyApiOptions<any, any, any, any, TAuthorizer, TEvent>, 'handler'>) {
-    this.opts = deepMerge({}, defaultFuncyOptions, opts ?? {})
-  }
+>(
+  apiOpts?: Omit<FuncyApiOptions<any, any, any, any, TAuthorizer, TEvent>, 'handler'>,
+) => {
+  apiOpts = merge({}, defaultFuncyOptions, apiOpts)
 
   /**
-   * Makes your API funcy-er
+   * funcy api handler
+   * @param opts funcy options
+   * @returns wrapped handler
    */
-  handler = <
+  const handler = <
     TResponse = any,
     TRequest = any,
     TPath = APIGatewayProxyEventPathParameters,
@@ -75,12 +77,13 @@ export class FuncyApi<
   >(
     opts: FuncyApiOptions<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent>,
   ) => {
-    const props = Object.create(this.opts, Object.getOwnPropertyDescriptors(opts ?? {}))
-    return pipeline<ApiResultV2<TResponse>, TEvent>(props).handler((event, context) => {
+    opts = merge({}, apiOpts, opts)
+
+    return pipeline<ApiResultV2<TResponse>, TEvent>(opts).handler((event, context) => {
       // TODO hack - write proper type mappings for other use cases.
       const ev = event as APIGatewayProxyEventV2
 
-      return props.handler({
+      return opts.handler({
         request: ev.body as TRequest,
         query: ev.queryStringParameters as TQuery,
         path: ev.pathParameters as TPath,
@@ -90,9 +93,10 @@ export class FuncyApi<
       })
     })
   }
+
+  handler.defaultOptions = apiOpts
+  return handler
 }
 
-/**
- * Pre-built Api Handler using sensible defaults
- */
-export const api = new FuncyApi().handler
+// default
+export const api = createApi()

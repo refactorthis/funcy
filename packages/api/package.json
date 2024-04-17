@@ -10,11 +10,13 @@
   "devDependencies": {
     "@types/airbnb__node-memwatch": "^2.0.3",
     "@types/aws-lambda": "^8.10.136",
+    "@types/lodash.merge": "^4.6.9",
     "@types/node": "^20.11.28",
     "vitest": "^1.4.0"
   },
   "dependencies": {
     "@funcy/core": "workspace:^",
+    "@middy/cloudwatch-metrics": "^5.3.2",
     "@middy/core": "^5.3.2",
     "@middy/error-logger": "^5.3.2",
     "@middy/http-content-encoding": "^5.3.2",
@@ -30,9 +32,9 @@
     "@middy/http-urlencode-body-parser": "^5.3.2",
     "@middy/http-urlencode-path-parser": "^5.3.2",
     "@middy/input-output-logger": "^5.3.2",
+    "@middy/util": "^5.3.2",
     "@middy/warmup": "^5.3.2",
-    "@middy/cloudwatch-metrics": "^5.3.2",
-    "@middy/util": "^5.3.2"
+    "lodash.merge": "^4.6.2"
   },
   "main": "index.ts",
   "author": "refactorthis",

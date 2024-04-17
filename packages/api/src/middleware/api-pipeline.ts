@@ -40,7 +40,6 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
     .use(httpMultipartBodyParserMiddleware({ disableContentTypeError: true }))
     .use(httpUrlencodeBodyParserMiddleware({ disableContentTypeError: true }))
     .use(httpSecurityHeadersMiddleware(opts?.http?.security))
-    .use(httpCorsMiddleware(opts?.http?.cors))
     .use(httpContentEncodingMiddleware(opts?.http?.encoding))
     .use(httpResponseSerializerMiddleware(opts?.http?.content?.response))
     .use(warmupMiddleware(opts?.function?.warmup))
@@ -51,6 +50,7 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   if (opts?.monitoring?.logLevel === 'trace')
     pipe.use(inputOutputLoggerMiddleware({ logger: logger.trace }))
 
+  if (opts?.http?.cors) pipe.use(httpCorsMiddleware(opts?.http?.cors))
   if (opts?.parser) pipe.use(validator({ parser: opts?.parser }))
   if (opts?.function?.middleware) opts?.function?.middleware.forEach((p) => pipe.use(p))
 

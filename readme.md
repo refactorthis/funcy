@@ -125,7 +125,7 @@ You can create your own api handlers using api-level defaults. For instance, let
 
 ```typescript
 // my-api.ts
-import { api } from '@funcy/api'
+import { createApi } from '@funcy/api'
 
 // my authorizer struct
 interface AuthorizerType {
@@ -133,13 +133,16 @@ interface AuthorizerType {
 }
 
 // Create this once for your API and share it
-export default api.create<AuthorizerType>()
+// We will set the authorizer to use, and allow a cross-origin domain
+export const api = createApi<AuthorizerType>({
+  http: { cors: { origin: 'web.mydomain.com' } },
+})
 ```
 
 ```typescript
 // customers-create.ts
 import { res } from '@funcy/api'
-import api from './my-api'
+import { api } from './my-api'
 
 export const handler = api({
   parser: {
@@ -158,6 +161,8 @@ export const handler = api({
   }
 })
 ```
+
+All handlers using this api will return the appropriate CORS headers, as specified.
 
 ### Examples
 

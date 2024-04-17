@@ -83,6 +83,8 @@ export interface FuncyApiOptions<
     /**
      * CORS options
      *
+     * WARN: ensure you override 'origin', as middy defaults to '*'
+     *
      * See https://middy.js.org/docs/middlewares/http-cors
      */
     cors?: CorsOptions
