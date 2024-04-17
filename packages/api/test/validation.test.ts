@@ -200,7 +200,7 @@ describe('validation::response', () => {
 
     const fn = api({
       monitoring: {
-        logger: console,
+        logger: () => console,
       },
       parser: {
         response: z.object({
@@ -218,7 +218,7 @@ describe('validation::response', () => {
               title: 'todo',
               due: new Date(),
             }
-          : {}
+          : ({} as any)
         return res.ok(response)
       },
     })
@@ -253,7 +253,7 @@ describe('validation::response', () => {
               title: 'todo',
               due: new Date(),
             }
-          : {}
+          : ({} as any)
         return res.ok(response)
       },
     })

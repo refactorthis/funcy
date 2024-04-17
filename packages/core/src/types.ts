@@ -13,7 +13,9 @@ export interface FuncyOptions<TEvent, TResponse> {
      *
      * @default console
      */
-    logger?: Logger
+    // When merging, lodash will attempt to merge console as an POJO, instead of assigning a new object.
+    // Using a fn 'getter' to work around this problem.
+    logger?: () => Logger
 
     /**
      * The log level.

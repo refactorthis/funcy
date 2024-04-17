@@ -5,24 +5,28 @@ const response =
   <TBody>(
     statusCode: number,
     body?: TBody,
-    headers?: {
-      [header: string]: string | number | boolean
+    props?: {
+      headers?: {
+        [header: string]: string | number | boolean
+      }
+      cookies?: string[]
     },
-    cookies?: string[],
   ) =>
-    ({ statusCode, body, headers, cookies }) as ApiResultV2<TBody>
+    ({ statusCode, body, headers: props?.headers, cookies: props?.cookies }) as ApiResultV2<TBody>
 
 // How to curry with generic type arg?
 const status =
   (statusCode?: number) =>
   <TBody>(
     body?: TBody,
-    headers?: {
-      [header: string]: string | number | boolean
+    props?: {
+      headers?: {
+        [header: string]: string | number | boolean
+      }
+      cookies?: string[]
     },
-    cookies?: string[],
   ) =>
-    ({ statusCode, body, headers, cookies }) as ApiResultV2<TBody>
+    ({ statusCode, body, headers: props?.headers, cookies: props?.cookies }) as ApiResultV2<TBody>
 
 /**
  * Response helper utility.

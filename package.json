@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest --ui",
     "typecheck": "tsc -noEmit",
     "lint": "eslint --cache .",
     "format": "prettier --ignore-path .gitignore --write --cache ."
@@ -15,6 +16,8 @@
     "@types/airbnb__node-memwatch": "^2.0.3",
     "@types/aws-lambda": "^8.10.136",
     "@types/node": "^20.11.28",
+    "@vitest/coverage-istanbul": "^1.5.0",
+    "@vitest/ui": "^1.5.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",

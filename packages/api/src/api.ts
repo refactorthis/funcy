@@ -11,7 +11,7 @@ import merge from 'lodash.merge'
 const defaultFuncyOptions: Omit<FuncyApiOptions, 'handler'> = {
   monitoring: {
     logLevel: 'info',
-    logger: console,
+    logger: () => console,
     cloudWatchMetrics: false,
     enableProfiling: false,
   },
