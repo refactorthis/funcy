@@ -56,7 +56,7 @@ describe('Handlers', () => {
     expect(response.statusCode).toBe(200)
   })
 
-  // supporting void makes the interface harder to use, so skipping this.
+  // supporting void makes the interface harder to use, so removing pending decision.
   // it.skip('should support a void response', async () => {
   //   const fn = api({ handler: () => {} })
   //   const response = await fn(events.payloadV2 as any, ctx())

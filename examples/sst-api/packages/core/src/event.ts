@@ -1,7 +1,7 @@
 import { createEventBuilder, ZodValidator } from 'sst/node/event-bus'
 
 export const event = createEventBuilder({
-  // @ts-expect-error
+  // @ts-ignore
   bus: 'bus',
   validator: ZodValidator,
 })

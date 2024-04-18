@@ -16,7 +16,7 @@ describe('options', () => {
   it('should merge & override defaults with api level options if specified', () => {
     const api = createApi({
       monitoring: {
-        logLevel: 'trace',
+        logLevel: 'debug',
       },
       http: {
         cors: {
@@ -24,7 +24,7 @@ describe('options', () => {
         },
       },
     })
-    expect(api.defaultOptions.monitoring?.logLevel).toBe('trace')
+    expect(api.defaultOptions.monitoring?.logLevel).toBe('debug')
     expect(api.defaultOptions.http?.cors?.origin).toBe('myorigin.com')
   })
 

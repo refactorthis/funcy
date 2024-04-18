@@ -16,20 +16,18 @@ import httpUrlencodePathParametersParserMiddleware from '@middy/http-urlencode-p
 import warmupMiddleware from '@middy/warmup'
 import cloudWatchMetricsMiddleware from '@middy/cloudwatch-metrics'
 import { profiler } from '@funcy/core'
-import { FuncyApiOptions } from '../types'
+import { FuncyApiOptions, Context } from '../types'
 import validator from './validator-middleware'
 
 export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   const logger = opts?.monitoring?.logger?.() ?? console
 
-  const pipe = middy<TEvent, TResponseStruct>({
+  const plugin = {
     ...(opts?.monitoring?.enableProfiling ? profiler({ logger }) : {}),
-    timeoutEarlyResponse: () => {
-      return {
-        statusCode: 408,
-      }
-    },
-  })
+    timeoutEarlyResponse: () => ({ statusCode: 408 }),
+  }
+
+  const pipe = middy<TEvent, TResponseStruct, Error, Context>(plugin)
     .use(httpEventNormalizerMiddleware())
     .use(httpHeaderNormalizerMiddleware())
     .use(httpUrlencodePathParametersParserMiddleware())
@@ -42,11 +40,11 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
     .use(httpResponseSerializerMiddleware(opts?.http?.content?.response))
     .use(warmupMiddleware(opts?.function?.warmup))
 
-  if (opts?.monitoring?.cloudWatchMetrics)
-    pipe.use(cloudWatchMetricsMiddleware(opts?.monitoring?.cloudWatchMetrics))
-
   if (opts?.monitoring?.logLevel === 'debug')
     pipe.use(inputOutputLoggerMiddleware({ logger: logger.debug }))
+
+  if (opts?.monitoring?.cloudWatchMetrics)
+    pipe.use(cloudWatchMetricsMiddleware(opts?.monitoring?.cloudWatchMetrics))
 
   if (opts?.http?.cors) pipe.use(httpCorsMiddleware(opts?.http?.cors))
   if (opts?.parser) pipe.use(validator({ parser: opts?.parser, logger }))

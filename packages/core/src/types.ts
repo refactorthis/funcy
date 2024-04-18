@@ -74,7 +74,7 @@ export interface FuncyOptions<TEvent, TResponse> {
      * Error handler
      * // TODO
      */
-    onError: (error: any) => void
+    onError?: (error: any) => void
   }
 }
 

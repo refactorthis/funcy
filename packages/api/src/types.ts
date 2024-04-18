@@ -1,11 +1,16 @@
 import { Options as CorsOptions } from '@middy/http-cors'
 import { FuncyOptions } from '@funcy/core'
-import { APIGatewayProxyStructuredResultV2, Context } from 'aws-lambda'
+import { APIGatewayProxyStructuredResultV2, Context as LambdaContext } from 'aws-lambda'
 import { ApiParser } from './parsers'
+import { MetricsLogger } from '@middy/cloudwatch-metrics'
 
 // allow void responses only if expecting void body type (if parsing a response type, then we shouldn't allow void)
 export type ApiResultV2<TBody> = Omit<APIGatewayProxyStructuredResultV2, 'body'> & {
   body?: TBody | undefined
+}
+
+export type Context = LambdaContext & {
+  metrics?: MetricsLogger
 }
 
 export type ApiHandlerFunc<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent> = ({

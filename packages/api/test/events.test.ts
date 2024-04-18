@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it } from 'vitest'
 import { api } from '../src/api'
 import * as events from './data/api-proxy-events'
 import { ctx } from './data/lambda-context'

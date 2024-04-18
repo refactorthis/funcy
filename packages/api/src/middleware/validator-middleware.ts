@@ -49,7 +49,10 @@ export default <TResponse, TRequest, TPath, TQuery>(opts?: {
       } catch (error: any) {
         if (parser.validateResponses === 'warn') {
           logger.warn(new Error('WARN: Response object failed validation', { cause: error }))
-        } else if (parser.validateResponses === 'error') {
+          return
+        }
+
+        if (parser.validateResponses === 'error') {
           throw createError(
             500,
             JSON.stringify({
@@ -62,6 +65,8 @@ export default <TResponse, TRequest, TPath, TQuery>(opts?: {
             },
           )
         }
+
+        throw error
       }
     },
   }

@@ -39,5 +39,8 @@ export const remove = api({
   parser: {
     path: GetTodoPath,
   },
-  handler: async ({ path }) => await Todo.remove(path.id),
+  handler: async ({ path }) => {
+    await Todo.remove(path.id)
+    return res.ok()
+  },
 })
