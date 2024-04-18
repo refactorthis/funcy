@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { res } from '../'
+import { res } from '..'
 
 describe('response helper (res)', () => {
   it('should map a variable status code', () => {

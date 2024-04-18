@@ -1,5 +1,5 @@
-import { describe, it } from 'vitest'
-import { createApi } from '../src/api'
+import { describe, it, expect } from 'vitest'
+import { api } from '../src/api'
 import * as events from './data/api-proxy-events'
 import { ctx } from './data/lambda-context'
 
@@ -7,7 +7,6 @@ import { ctx } from './data/lambda-context'
 
 describe('Event formats', () => {
   it('should support API proxy payload format v2', async () => {
-    const api = createApi()
     const fn = api({
       handler: async () => {
         return {
@@ -24,7 +23,6 @@ describe('Event formats', () => {
   })
 
   it('should support API proxy payload format v1', async () => {
-    const api = createApi()
     const fn = api({
       handler: async ({ event }) => {
         console.log(event)

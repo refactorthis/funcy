@@ -1,4 +1,5 @@
 import process from 'process'
+import { Logger } from '../types'
 
 const defaults = {
   logger: console,
@@ -46,11 +47,11 @@ const memoryDiff = (a: MemorySnapshot, b: MemorySnapshot) => {
     .join(' | ')
 }
 
-export const profiler = (opts = {}) => {
+export const profiler = (opts: { logger?: Logger } = {}) => {
   const { logger } = { ...defaults, ...opts }
   const store = new Map<string, any>()
 
-  console.log('[Funcy] Profiling Enabled')
+  logger.info('[Funcy] Profiling Enabled')
 
   const start = (id: string) => {
     store.set(id, { time: process.hrtime.bigint(), mem: memorySnapshot() })
@@ -61,8 +62,8 @@ export const profiler = (opts = {}) => {
     const mem = memorySnapshot()
 
     const time = Number.parseInt((process.hrtime.bigint() - item.time).toString()) / 1000000
-    logger.debug(id, time, 'ms')
-    logger.debug(id, memoryDiff(item.mem, mem))
+    logger.debug(`${id} - ${time}ms`)
+    logger.debug(`${id} - ${memoryDiff(item.mem, mem)}`)
     store.delete(id)
   }
 

@@ -19,11 +19,11 @@ export interface FuncyOptions<TEvent, TResponse> {
 
     /**
      * The log level.
-     * Debug will log all events and responses.
+     * 'debug' will log all events and responses.
      *
      * @default 'info'
      */
-    logLevel?: 'trace' | 'info' | 'warn' | 'error'
+    logLevel?: 'debug' | 'info' | 'warn' | 'error'
 
     /**
      * If true, will enable memory and stopwatch profiling of the pipeline.
@@ -79,7 +79,7 @@ export interface FuncyOptions<TEvent, TResponse> {
 }
 
 export interface Logger {
-  trace: (message: any) => void
+  debug: (message: any) => void
   info: (message: any) => void
   warn: (message: any) => void
   error: (message: any) => void

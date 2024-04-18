@@ -80,7 +80,7 @@ export const createApi = <
     opts = merge({}, apiOpts, opts)
 
     return pipeline<ApiResultV2<TResponse>, TEvent>(opts).handler((event, context) => {
-      // TODO hack - write proper type mappings for other use cases.
+      // TODO level-up to ApiGatewayProxyEventV2 always and remove TEvent
       const ev = event as APIGatewayProxyEventV2
 
       return opts.handler({

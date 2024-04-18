@@ -4,9 +4,8 @@ import { APIGatewayProxyStructuredResultV2, Context } from 'aws-lambda'
 import { ApiParser } from './parsers'
 
 // allow void responses only if expecting void body type (if parsing a response type, then we shouldn't allow void)
-export type ApiResultV2<TBody> = TBody extends void ? void : ApiResultV2WithContent<TBody>
-export type ApiResultV2WithContent<TBody> = Omit<APIGatewayProxyStructuredResultV2, 'body'> & {
-  body: TBody | undefined
+export type ApiResultV2<TBody> = Omit<APIGatewayProxyStructuredResultV2, 'body'> & {
+  body?: TBody | undefined
 }
 
 export type ApiHandlerFunc<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent> = ({

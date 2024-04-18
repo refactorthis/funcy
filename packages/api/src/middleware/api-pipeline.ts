@@ -45,11 +45,11 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
   if (opts?.monitoring?.cloudWatchMetrics)
     pipe.use(cloudWatchMetricsMiddleware(opts?.monitoring?.cloudWatchMetrics))
 
-  if (opts?.monitoring?.logLevel === 'trace')
-    pipe.use(inputOutputLoggerMiddleware({ logger: logger.trace }))
+  if (opts?.monitoring?.logLevel === 'debug')
+    pipe.use(inputOutputLoggerMiddleware({ logger: logger.debug }))
 
   if (opts?.http?.cors) pipe.use(httpCorsMiddleware(opts?.http?.cors))
-  if (opts?.parser) pipe.use(validator({ parser: opts?.parser }))
+  if (opts?.parser) pipe.use(validator({ parser: opts?.parser, logger }))
   if (opts?.function?.middleware) opts?.function?.middleware.forEach((p) => pipe.use(p))
 
   pipe
