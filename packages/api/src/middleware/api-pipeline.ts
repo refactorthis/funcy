@@ -35,10 +35,11 @@ export default <TResponseStruct, TEvent>(opts?: FuncyApiOptions) => {
     .use(httpJsonBodyParserMiddleware({ disableContentTypeError: true }))
     .use(httpMultipartBodyParserMiddleware({ disableContentTypeError: true }))
     .use(httpUrlencodeBodyParserMiddleware({ disableContentTypeError: true }))
-    .use(httpSecurityHeadersMiddleware(opts?.http?.security))
     .use(httpContentEncodingMiddleware(opts?.http?.encoding))
     .use(httpResponseSerializerMiddleware(opts?.http?.content?.response))
     .use(warmupMiddleware(opts?.function?.warmup))
+
+  if (opts?.http?.security) pipe.use(httpSecurityHeadersMiddleware(opts?.http?.security))
 
   if (opts?.monitoring?.logLevel === 'debug')
     pipe.use(inputOutputLoggerMiddleware({ logger: logger.debug }))

@@ -15,7 +15,6 @@ describe('Monitoring -> Profiling', () => {
   it('should not profile if not enabled', async () => {
     const fn = api({ handler: () => res.ok() })
     const response = await fn(sampleEvent as any, ctx())
-    console.log(response)
     expect(response.statusCode).toBe(200)
   })
 
