@@ -13,7 +13,7 @@
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "@funcy/api": "link:../../../../packages/api",
+    "@rt/funcy": "link:../../../../",
     "zod": "^3.22.4"
   }
 }

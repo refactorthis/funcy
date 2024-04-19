@@ -1,14 +1,31 @@
 {
-  "name": "funcy",
+  "name": "@refactorthis/funcy",
   "version": "0.0.1",
+  "description": "**funcy** provides a simple, strongly typed, and comprehensive toolkit for AWS lambda.",
   "type": "module",
-  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
     "test": "vitest run --coverage",
     "test:watch": "vitest --ui",
     "typecheck": "pnpm run -r typecheck",
-    "lint": "eslint --cache ./packages/ && prettier --check .",
+    "lint": "eslint --cache ./package && prettier --check .",
     "format": "prettier --write --cache .",
     "ci": "pnpm run typecheck && pnpm run lint && pnpm run test"
   },
@@ -16,6 +33,7 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/aws-lambda": "^8.10.137",
     "@types/node": "^20.12.7",
+    "@types/lodash.merge": "^4.6.9",
     "@vitest/coverage-istanbul": "^1.5.0",
     "@vitest/ui": "^1.5.0",
     "eslint": "^8.57.0",
@@ -23,13 +41,54 @@
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.7.0",
-    "vitest": "^1.5.0"
+    "vitest": "^1.5.0",
+    "vite-tsconfig-paths": "^4.3.2",
+    "zod": "^3.22.4"
   },
-  "main": "index.ts",
+  "dependencies": {
+    "@middy/cloudwatch-metrics": "^5.3.2",
+    "@middy/core": "^5.3.2",
+    "@middy/error-logger": "^5.3.2",
+    "@middy/http-content-encoding": "^5.3.2",
+    "@middy/http-content-negotiation": "^5.3.2",
+    "@middy/http-cors": "^5.3.2",
+    "@middy/http-error-handler": "^5.3.2",
+    "@middy/http-event-normalizer": "^5.3.2",
+    "@middy/http-header-normalizer": "^5.3.2",
+    "@middy/http-json-body-parser": "^5.3.2",
+    "@middy/http-multipart-body-parser": "^5.3.2",
+    "@middy/http-response-serializer": "^5.3.2",
+    "@middy/http-security-headers": "^5.3.2",
+    "@middy/http-urlencode-body-parser": "^5.3.2",
+    "@middy/http-urlencode-path-parser": "^5.3.2",
+    "@middy/input-output-logger": "^5.3.2",
+    "@middy/util": "^5.3.2",
+    "@middy/warmup": "^5.3.2",
+    "lodash.merge": "^4.6.2"
+  },
+  "peerDependencies": {
+    "zod": "^3.22.4"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "typescript",
+    "serverless"
+  ],
   "author": "refactorthis",
-  "license": "ISC",
-  "description": "**funcy** provides a simple, strongly typed, and comprehensive toolkit for AWS lambda functions.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/refactorthis/funcy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/refactorthis/funcy/issues"
+  },
+  "homepage": "https://github.com/refactorthis/funcy#readme",
   "workspaces": [
-    "packages/*"
+    "examples/*"
   ]
 }

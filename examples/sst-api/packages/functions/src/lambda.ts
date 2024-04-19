@@ -1,7 +1,7 @@
-import { api, res } from '@funcy/api'
+import { func } from '@refactorthis/funcy'
 
-export const handler = api({
+export const handler = func({
   handler: async () => {
-    return res.ok(`Hello world. The time is ${new Date().toISOString()}`)
+    return `Hello world. The time is ${new Date().toISOString()}`
   },
 })

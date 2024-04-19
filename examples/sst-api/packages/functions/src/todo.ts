@@ -1,5 +1,5 @@
 import { Todo } from '@sst-api/core/todo'
-import { api, res } from '@funcy/api'
+import { api, res } from '@refactorthis/funcy'
 import { CreateTodoRequest, GetTodoPath, ListQuery, ListTodoResponse, TodoResponse } from './models'
 
 export const create = api({

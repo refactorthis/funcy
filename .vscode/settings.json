@@ -4,7 +4,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.workingDirectories": [{ "pattern": "./examples/**" }, { "pattern": "./packages/*" }],
+  "eslint.workingDirectories": [{ "pattern": "./examples/**" }, { "pattern": "./package/*" }],
   "editor.stickyScroll.enabled": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,

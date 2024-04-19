@@ -1,6 +1,6 @@
 import z from 'zod'
 
-// TODO generate this using zod-to-openapi
+// NOTE this can be generated using zod-to-openapi
 
 export const GetTodoPath = z.object({
   id: z.string(),

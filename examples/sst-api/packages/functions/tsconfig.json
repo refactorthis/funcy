@@ -4,9 +4,10 @@
     "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@sst-api/core/*": ["../core/src/*"],
-      "@funcy/api/*": ["../../../../packages/api/src/*"]
+      "@refactorthis/funcy": ["../../../../package"]
     }
   }
 }

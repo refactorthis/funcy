@@ -4,8 +4,14 @@
     "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": ".",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@core": ["package/src/core"],
+      "@core/*": ["package/src/core/*"],
+      "@api": ["package/src/integrations/api"],
+      "@api/*": ["package/src/integrations/api/*"]
+    }
   },
-  "include": ["packages/**/src"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules"]
 }

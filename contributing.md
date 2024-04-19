@@ -25,10 +25,11 @@ pnpm test
 
 ## Repository layout
 
-funcy is architected as a monorepo using a pnpm workspace.
+funcy is architected as a single package.
 
-- /packages/core - core funcy concerns
-- /packages/api - funcy usage for building APIs using AWS Api Gateway
+- /src/core - core funcy concerns
+- /src/integrations - various integrations for building services using funcy
+- /test - test helpers and mocks
 - /examples - example projects showing the use of funcy
 - /docs - github pages site
 
@@ -36,6 +37,30 @@ funcy is architected as a monorepo using a pnpm workspace.
 
 - Ensure you have forked the public repository and made your changes in a branch on your local fork.
 - All changes must have corresponding test coverage in the same commit.
-- All commits should be following the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) standard.
 - Run all tests and typecheck locally again before raising a PR.
 - Raise the PR to the main repository, requesting review from a core contributor.
+
+## Documentation
+
+If your changes involve new features or modifications to existing functionality, please update the relevant documentation. This includes:
+
+- Inline code comments
+- README.md files
+- API documentation (if applicable)
+- Update examples in the `/examples` directory if necessary
+
+## Commit Messages
+
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. Please ensure your commit messages are structured as follows:
+
+```
+<type>[optional scope]: <description>
+
+<body>
+
+[optional footer(s)]
+```
+
+## Code Style and Linting
+
+We use ESLint and Prettier to maintain consistent code style. Before submitting a pull request, please ensure your code passes the linting and formatting checks.

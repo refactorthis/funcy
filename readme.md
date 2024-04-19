@@ -1,7 +1,7 @@
 <p align="center">
   <img src="./docs/static/logo.png" width="220px" align="center" alt="funcy logo" />
   <p align="center">
-    Strongly typed, best practice & simple functional interface for AWS lambda functions
+    Strongly typed, best practice & simple declarative interface for AWS lambda functions
     <br />
   </p>
 </p>
@@ -30,12 +30,11 @@
   - [Installation](#installation)
   - [Writing funcy Functions](#writing-funcy-functions)
   - [Examples](#examples)
-- [API Definition](#api-definition)
 - [Performance Comparisons](#performance-comparisons)
 - [Roadmap](#roadmap)
 - [See Also](#see-also)
   - [Complementary Packages](#complementary-packages)
-  - [Technologies](#technologies)
+  - [Acknowledgements](#acknowledgements)
 
 ## Introduction
 
@@ -54,7 +53,7 @@ If you prefer lightweight lambda functions and don't want a full-blown framework
 The example below shows parsing, validating and inferring a strongly-typed model for both request and response.
 
 ```typescript
-import { api, res } from '@funcy/api'
+import { api, res } from '@refactorthis/funcy'
 import { CreateCustomerRequest, CreateCustomerResponse } from './dtos'
 
 // create customer handler
@@ -102,7 +101,7 @@ pnpm add zod
 To get started let's create a simple API Gateway Proxy (HTTP or REST) lambda handler. This will validate the request and the response with our predefined zod schemas.
 
 ```typescript
-import { api, res } from '@funcy/api'
+import { api, res } from '@refactorthis/funcy'
 import { MyRequest, MyResponse } from './dtos'
 
 export const handler = api({
@@ -122,7 +121,7 @@ You can create your own api handlers using api-level defaults. For instance, let
 
 ```typescript
 // my-api.ts
-import { createApi } from '@funcy/api'
+import { createApi } from '@refactorthis/funcy'
 
 // my authorizer struct
 interface AuthorizerType {
@@ -138,7 +137,7 @@ export const api = createApi<AuthorizerType>({
 
 ```typescript
 // customers-create.ts
-import { res } from '@funcy/api'
+import { res } from '@refactorthis/funcy'
 import { api } from './my-api'
 
 export const handler = api({
@@ -166,7 +165,7 @@ All handlers using this api will return the appropriate CORS headers, as specifi
 Let's create CRUD handlers for the "Customer" domain, with request validation.
 
 ```typescript
-import { api, res } from '@funcy/api'
+import { api, res } from '@refactorthis/funcy'
 
 // create
 export const handler = api({
@@ -218,10 +217,6 @@ export const handler = api({
 })
 ```
 
-## API Definition
-
-// todo
-
 ## Performance Comparisons
 
 funcy
@@ -233,7 +228,6 @@ Koa
 
 - Support for other validators
 - Verify support for legacy API Gateway proxy integration (< v2)
-- Test coverage
 - Performance test comparison with nest.js, raw lambda, etc.
 - Other lambda integrations (s3, dynamo, etc)
 - hateoas middleware
@@ -247,7 +241,7 @@ Koa
 - [zod-to-openapi](https://github.com/asteasolutions/zod-to-openapi) - generate your Open API definition code-first from zod schemas.
 - [openapi-zod-client](https://github.com/astahmer/openapi-zod-client) - alternatively, generate your code from your design-first Open API definition
 
-### Technologies
+### Acknowledgements
 
 - [middy.js](https://github.com/middyjs/middy) - powers the funcy pipeline with it's extensible middleware framework.
 - [TypeScript](https://github.com/microsoft/TypeScript) - strong-typing is critical for maintainability and reducing bugs.
