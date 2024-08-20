@@ -21,6 +21,8 @@
 
 <br />
 
+> **NOTE** funcy is in pre-release. The API may change at any time.
+
 ## funcy
 
 - [funcy](#funcy)
@@ -37,8 +39,6 @@
   - [Acknowledgements](#acknowledgements)
 
 ## Introduction
-
-**PLEASE NOTE funcy is in pre-release. The API is not yet stable and may change at any time.**
 
 **funcy** provides a TypeScript-first (fully typed), best practice & simple functional interface for AWS lambda functions. The perfect complement to serverless frameworks such as the [serverless](https://www.serverless.com/framework), [SST](https://sst.dev), [SAM](https://aws.amazon.com/serverless/sam/), etc.
 
