@@ -25,13 +25,13 @@ pnpm test
 
 ## Repository layout
 
-funcy is architected as a single package.
+funcy is architected as a single package in the `package` directory.
 
-- /src/core - core funcy concerns
-- /src/integrations - various integrations for building services using funcy
-- /test - test helpers and mocks
-- /examples - example projects showing the use of funcy
-- /docs - github pages site
+- `package/src/core` - core funcy concerns
+- `package/src/integrations` - various integrations for building services using funcy
+- `package/test` - test helpers and mocks
+- `examples` - example projects showing the use of funcy
+- `docs` - documentation
 
 ## Making a change
 
