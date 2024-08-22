@@ -1,6 +1,6 @@
 {
   "name": "@refactorthis/funcy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "**funcy** provides a simple, strongly typed, and comprehensive toolkit for AWS lambda.",
   "type": "module",
   "main": "./dist/index.js",
