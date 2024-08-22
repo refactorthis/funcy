@@ -144,10 +144,10 @@ import { api } from './my-api'
 
 export const handler = api({
   parser: {
-    request: MyRequestSchema
-    response: MyResponseSchema
-    path: PathSchema
-    query: QueryStringSchema
+    request: MyRequestSchema,
+    response: MyResponseSchema,
+    path: PathSchema,
+    query: QueryStringSchema,
   },
   handler: async({ request, path, query, authorizer }) = {
     // request is the strongly typed request body
