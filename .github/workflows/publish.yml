@@ -1,0 +1,26 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on version tags like v1.0.0
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org/'
+      - run: pnpm install
+      - run: pnpm run ci
+      - run: pnpm run build
+      - run: pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Ensure you have NPM_TOKEN in your repository secrets

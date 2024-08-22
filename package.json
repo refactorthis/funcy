@@ -4,24 +4,14 @@
   "description": "**funcy** provides a simple, strongly typed, and comprehensive toolkit for AWS lambda.",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup package/index.ts --format cjs,esm --dts",
     "test": "vitest run --coverage",
     "test:watch": "vitest --ui",
     "typecheck": "pnpm run -r typecheck",
@@ -39,6 +29,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.3.3",
+    "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.18.0",
     "vite-tsconfig-paths": "^4.3.2",

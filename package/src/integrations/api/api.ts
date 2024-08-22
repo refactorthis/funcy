@@ -74,7 +74,6 @@ export const createApi = <
     opts: FuncyApiOptions<TResponse, TRequest, TPath, TQuery, TAuthorizer, TEvent>,
   ) => {
     opts = merge({}, apiOpts, opts)
-    console.log(opts)
 
     return pipeline<TResponse, TRequest, TPath, TQuery, TAuthorizer>(opts).handler(
       (ev, context) => {

@@ -5,6 +5,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "outDir": "./dist",
     "paths": {
       "@core": ["package/src/core"],
       "@core/*": ["package/src/core/*"],
