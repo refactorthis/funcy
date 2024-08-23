@@ -7,14 +7,18 @@
 
 export type ZodSchemaLike<TInput> = {
   _input: TInput
-  parseAsync(...args: any[]): any
+  parseAsync(...args: any[]): Promise<any>
 }
 
 export type YupSchemaLike<TInput> = {
   validate(value: TInput, options?: any): Promise<any>
 }
 
-export type Schema<T> = ZodSchemaLike<T> | YupSchemaLike<T>
+export type JoiSchemaLike<TInput> = {
+  validateAsync(value: TInput): Promise<any>
+}
+
+export type Schema<T> = ZodSchemaLike<T> | JoiSchemaLike<T> | YupSchemaLike<T>
 
 /**
  * Api parsing options

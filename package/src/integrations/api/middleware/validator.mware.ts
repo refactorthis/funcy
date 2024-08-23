@@ -31,7 +31,8 @@ export default <TResponse, TRequest, TPath, TQuery>(opts?: {
           400,
           JSON.stringify({
             message: 'Invalid Request',
-            details: error.errors,
+            details:
+              error.errors /* yup zod */ || error.details?.flatMap((p) => p.message) /* joi */,
           }),
           {
             cause: error,
@@ -78,6 +79,11 @@ const validate = async (schema: any, value: any, path: string[]) => {
   // zod
   if (typeof schema.parseAsync === 'function') {
     return await schema.parseAsync(value, { path })
+  }
+
+  // joi
+  if (typeof schema.validateAsync === 'function') {
+    return await schema.validateAsync(value)
   }
 
   // yup

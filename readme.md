@@ -48,8 +48,7 @@ Features:
 - Strongly typed request and response models (inferred or explicit)
 - Best practices pipeline with sensible defaults for CORS, security headers, encoding, error handling, metrics, logging, and profiling out of the box.
 - A fully-configurable and batteries-included interface; everything you need is an ctrl+space away.
-
-If you prefer lightweight lambda functions and don't want a full-blown framework (like NestJS), then this is for you.
+- Exremely lightweight functions
 
 ### Preview
 
@@ -62,8 +61,8 @@ import { CreateCustomerRequest, CreateCustomerResponse } from './dtos'
 // create customer handler
 export const create = api({
   parser: {
-    request: CreateCustomerRequest, // zod or yup schema
-    response: CreateCustomerResponse, // zod or yup schema
+    request: CreateCustomerRequest, // zod/yup/joi schema
+    response: CreateCustomerResponse, // zod/yup/joi schema
   },
   handler: async ({ request }) = {
     const response = await Customer.create(request)
@@ -93,12 +92,12 @@ pnpm add @refactorthis/funcy
 #npm install --save @refactorthis/funcy
 ```
 
-If you haven't already installed your validation framework, add one to your package.
+If you haven't already installed your schema validation framework, add ONE to your package.
 
 ```sh
 pnpm add zod
-# or
 # pnpm add yup
+# pnpm add zoi
 ```
 
 ### Writing funcy Functions
@@ -111,8 +110,8 @@ import { MyRequest, MyResponse } from './dtos'
 
 export const handler = api({
   parser: {
-    request: MyRequest, // zod or yup schema
-    response: MyResponse, // zod or yup schema
+    request: MyRequest, // zod/yup/joi schema
+    response: MyResponse, // zod/yup/joi schema
   },
   handler: async({ request }) = {
     // request is the strongly typed request body
@@ -228,6 +227,7 @@ funcy is built to be agnostic of schema library. At this time funcy supports:
 
 - [zod](https://github.com/colinhacks/zod)
 - [yup](https://github.com/jquense/yup)
+- [joi](https://github.com/hapijs/joi)
 
 ## Performance Comparisons
 
@@ -259,6 +259,10 @@ Working with yup:
 
 - [yup](https://github.com/jquense/yup) - Dead simple Object schema validation
 - [openapi-yup-generator](https://github.com/igtm/openapi-yup-generator) - Generate your yup schemas from Open API definition
+
+Working with joi:
+
+- [joi](https://github.com/hapijs/joi)
 
 ### Acknowledgements
 
