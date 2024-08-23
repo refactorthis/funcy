@@ -41,6 +41,7 @@
     "typescript-eslint": "^7.18.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0",
+    "yup": "^1.4.0",
     "zod": "^3.23.8"
   },
   "dependencies": {
@@ -63,9 +64,6 @@
     "@middy/util": "^5.4.6",
     "@middy/warmup": "^5.4.6",
     "lodash.merge": "^4.6.2"
-  },
-  "peerDependencies": {
-    "zod": "^3.22.4"
   },
   "engines": {
     "node": ">=14"

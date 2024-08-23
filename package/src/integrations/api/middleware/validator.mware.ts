@@ -80,5 +80,10 @@ const validate = async (schema: any, value: any, path: string[]) => {
     return await schema.parseAsync(value, { path })
   }
 
+  // yup
+  if (typeof schema.validate === 'function') {
+    return await schema.validate(value)
+  }
+
   throw new Error(`Unable to find validator function for schema ${schema}`)
 }

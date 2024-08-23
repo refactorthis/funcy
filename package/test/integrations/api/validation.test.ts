@@ -5,7 +5,7 @@ import { ctx } from '../../mocks/lambda-context'
 import z from 'zod'
 import { APIGatewayProxyEventV2 } from 'aws-lambda'
 
-// TODO fix typescript warnings here
+// TODO fix typescript warnings here (need to fix ApiResult to handle error schema)
 
 const api = createApi()
 

@@ -5,13 +5,16 @@
  * We use duck typing here, so that we don't need to pull in the package deps.
  */
 
-// zod
 export type ZodSchemaLike<TInput> = {
   _input: TInput
   parseAsync(...args: any[]): any
 }
 
-export type Schema<T> = ZodSchemaLike<T> // add other parsers here, eg. | YupSchemaLike<T>
+export type YupSchemaLike<TInput> = {
+  validate(value: TInput, options?: any): Promise<any>
+}
+
+export type Schema<T> = ZodSchemaLike<T> | YupSchemaLike<T>
 
 /**
  * Api parsing options

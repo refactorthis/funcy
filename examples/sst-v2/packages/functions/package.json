@@ -1,5 +1,5 @@
 {
-  "name": "@sst-api/functions",
+  "name": "@sst-v2/functions",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -13,7 +13,7 @@
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "@rt/funcy": "link:../../../../",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "yup": "^1.4.0"
   }
 }

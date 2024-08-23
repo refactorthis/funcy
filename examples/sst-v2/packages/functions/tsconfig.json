@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@sst-api/core/*": ["../core/src/*"],
+      "@sst-v2/core/*": ["../core/src/*"],
       "@refactorthis/funcy": ["../../../../package"]
     }
   }

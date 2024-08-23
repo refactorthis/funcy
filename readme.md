@@ -21,7 +21,7 @@
 
 <br />
 
-> **NOTE** funcy is in pre-release. The API may change at any time.
+> **NOTE** funcy is in pre-release. We will attempt to keep the API as-is, however there may be breaking changes during this period.
 
 ## funcy
 
@@ -32,6 +32,7 @@
   - [Installation](#installation)
   - [Writing funcy Functions](#writing-funcy-functions)
   - [Examples](#examples)
+- [Schema Parsing Support](#schema-parsing-support)
 - [Performance Comparisons](#performance-comparisons)
 - [Roadmap](#roadmap)
 - [See Also](#see-also)
@@ -61,8 +62,8 @@ import { CreateCustomerRequest, CreateCustomerResponse } from './dtos'
 // create customer handler
 export const create = api({
   parser: {
-    request: CreateCustomerRequest, // zod schema
-    response: CreateCustomerResponse, // zod schema
+    request: CreateCustomerRequest, // zod or yup schema
+    response: CreateCustomerResponse, // zod or yup schema
   },
   handler: async ({ request }) = {
     const response = await Customer.create(request)
@@ -86,16 +87,18 @@ funcy also has a full middleware pipeline, allowing you to control things like C
 ### Installation
 
 ```sh
-pnpm add @funcy/api
-#bun add @funcy/api
-#yarn add @funcy/api
-#npm install --save-dev @funcy/api
+pnpm add @refactorthis/funcy
+#bun add @refactorthis/funcy
+#yarn add @refactorthis/funcy
+#npm install --save @refactorthis/funcy
 ```
 
-If you haven't already installed your validation framework, add one to your package. We strongly recommend zod.
+If you haven't already installed your validation framework, add one to your package.
 
 ```sh
 pnpm add zod
+# or
+# pnpm add yup
 ```
 
 ### Writing funcy Functions
@@ -108,8 +111,8 @@ import { MyRequest, MyResponse } from './dtos'
 
 export const handler = api({
   parser: {
-    request: MyRequest, // zod schema
-    response: MyResponse, // zod schema
+    request: MyRequest, // zod or yup schema
+    response: MyResponse, // zod or yup schema
   },
   handler: async({ request }) = {
     // request is the strongly typed request body
@@ -219,6 +222,13 @@ export const handler = api({
 })
 ```
 
+## Schema Parsing Support
+
+funcy is built to be agnostic of schema library. At this time funcy supports:
+
+- [zod](https://github.com/colinhacks/zod)
+- [yup](https://github.com/jquense/yup)
+
 ## Performance Comparisons
 
 funcy
@@ -228,7 +238,7 @@ Koa
 
 ## Roadmap
 
-- Support for other validators
+- Support for other schema libraries
 - Verify support for legacy API Gateway proxy integration (< v2)
 - Performance test comparison with nest.js, raw lambda, etc.
 - Other lambda integrations (s3, dynamo, etc)
@@ -239,12 +249,18 @@ Koa
 
 ### Complementary Packages
 
+Working with zod:
+
 - [zod](https://github.com/colinhacks/zod) - a great Typescript-first validation framework, which can infer your DTO types automatically
 - [zod-to-openapi](https://github.com/asteasolutions/zod-to-openapi) - generate your Open API definition code-first from zod schemas.
 - [openapi-zod-client](https://github.com/astahmer/openapi-zod-client) - alternatively, generate your code from your design-first Open API definition
+
+Working with yup:
+
+- [yup](https://github.com/jquense/yup) - Dead simple Object schema validation
+- [openapi-yup-generator](https://github.com/igtm/openapi-yup-generator) - Generate your yup schemas from Open API definition
 
 ### Acknowledgements
 
 - [middy.js](https://github.com/middyjs/middy) - powers the funcy pipeline with it's extensible middleware framework.
 - [TypeScript](https://github.com/microsoft/TypeScript) - strong-typing is critical for maintainability and reducing bugs.
-- [zod](https://github.com/colinhacks/zod) - Developer-friendly, TypeScript validation framework

@@ -4,7 +4,7 @@ import { API } from './stacks/MyStack'
 export default {
   config(_input) {
     return {
-      name: 'sst-api',
+      name: 'sst-v2',
       region: 'us-east-1',
     }
   },

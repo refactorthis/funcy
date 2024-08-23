@@ -1,6 +1,6 @@
-# sst-api
+# sst-v1
 
-This is an example project using SST & funcy.
+This is an example project using SST v2 & funcy.
 
 See the [tutorial](https://sst.dev/examples/how-to-create-a-rest-api-with-serverless.html) for more information.
 

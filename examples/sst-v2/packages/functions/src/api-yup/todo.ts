@@ -1,4 +1,4 @@
-import { Todo } from '@sst-api/core/todo'
+import { Todo } from '@sst-v2/core/todo'
 import { api, res } from '@refactorthis/funcy'
 import { CreateTodoRequest, GetTodoPath, ListQuery, ListTodoResponse, TodoResponse } from './models'
 
