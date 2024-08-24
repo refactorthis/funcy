@@ -24,9 +24,13 @@
     "typecheck": "pnpm run -r typecheck",
     "lint": "eslint --cache ./package && prettier --check .",
     "format": "prettier --write --cache .",
-    "ci": "pnpm run typecheck && pnpm run lint && pnpm run test"
+    "ci": "pnpm run typecheck && pnpm run lint && pnpm run test",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@tsconfig/node20": "^20.1.4",
     "@types/aws-lambda": "^8.10.143",
     "@types/lodash.merge": "^4.6.9",
@@ -35,6 +39,7 @@
     "@vitest/ui": "^1.6.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.5",
     "prettier": "^3.3.3",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
