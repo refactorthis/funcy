@@ -1,8 +1,6 @@
 name: ci
 
 on:
-  push:
-    branches: ['main']
   pull_request:
     branches: ['main']
 
@@ -25,10 +23,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
       - run: pnpm install
-      - if: github.event_name == 'push'
-        run: npx commitlint --last --verbose
-      - if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
+      - run: pnpm audit signatures
+      - run: pnpx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
       - run: pnpm run ci
       - uses: actions/upload-artifact@v4
         with:

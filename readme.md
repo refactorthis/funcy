@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/refactorthis/funcy/actions/workflows/ci.yaml?query=branch%3Amain"><img src="https://github.com/refactorthis/funcy/actions/workflows/ci.yaml/badge.svg?event=push&branch=main" alt="CI status" /></a>
+  <a href="https://github.com/refactorthis/funcy/actions/workflows/main.yaml?query=branch%3Amain"><img src="https://github.com/refactorthis/funcy/actions/workflows/main.yaml/badge.svg?event=push&branch=main" alt="CI status" /></a>
   <a href="https://opensource.org/licenses/MIT" rel="nofollow"><img src="https://img.shields.io/github/license/refactorthis/funcy" alt="License"></a>
 </p>
 

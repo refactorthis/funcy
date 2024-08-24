@@ -1,0 +1,40 @@
+name: main
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: read # for checkout
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org/'
+      - run: pnpm install
+      - run: pnpm audit signatures
+      - run: pnpm run ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release

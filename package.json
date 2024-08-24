@@ -24,7 +24,7 @@
     "typecheck": "pnpm run -r typecheck",
     "lint": "eslint --cache ./package && prettier --check .",
     "format": "prettier --write --cache .",
-    "ci": "pnpm run typecheck && pnpm run lint && pnpm run test",
+    "ci": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run build",
     "prepare": "husky",
     "commitlint": "commitlint --edit"
   },
@@ -41,6 +41,7 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.5",
     "prettier": "^3.3.3",
+    "semantic-release": "^24.1.0",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.18.0",
