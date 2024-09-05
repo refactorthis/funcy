@@ -7,7 +7,7 @@ import type {
 import pipeline from './middleware/api.pipeline'
 import { FuncyApiOptions } from './types'
 import merge from 'lodash.merge'
-import { baseOptions } from 'package/src/core/defaults'
+import { baseOptions } from '@core/defaults'
 
 const defaults: Omit<FuncyApiOptions, 'handler'> = {
   ...baseOptions,

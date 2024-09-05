@@ -1,8 +1,8 @@
 import { ApiResultV2, FuncyApiOptions } from '../types'
 import validator from './validator.mware'
-import { createPipeline } from 'package/src/core/middleware/pipeline'
+import { createPipeline } from '@core/middleware/pipeline'
 import { MiddyfiedHandler } from '@middy/core'
-import { Context } from 'package/src/core/types'
+import { Context } from '@core/types'
 
 // middy middleware
 import httpContentNegotiationMiddleware from '@middy/http-content-negotiation'

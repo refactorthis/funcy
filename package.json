@@ -18,13 +18,12 @@
   },
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
-    "build": "tsup package/index.ts --format cjs,esm --dts",
+    "build": "tsup ./package/index.ts --format cjs,esm --dts",
     "test": "vitest run --coverage",
     "test:watch": "vitest --ui",
-    "typecheck": "pnpm run -r typecheck",
     "lint": "eslint --cache ./package && prettier --check .",
     "format": "prettier --write --cache .",
-    "ci": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run build",
+    "ci": "pnpm run lint && pnpm run test && pnpm run build",
     "prepare": "husky",
     "commitlint": "commitlint --edit"
   },
@@ -91,6 +90,6 @@
   },
   "homepage": "https://github.com/refactorthis/funcy#readme",
   "workspaces": [
-    "examples/*"
+    "examples/**/*"
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "include": ["./src/*.ts"],
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@refactorthis/funcy": ["../../package"]
+    }
+  }
+}

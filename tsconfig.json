@@ -10,10 +10,10 @@
     "strictFunctionTypes": false,
     "outDir": "./dist",
     "paths": {
-      "@core": ["package/src/core"],
-      "@core/*": ["package/src/core/*"],
-      "@api": ["package/src/integrations/api"],
-      "@api/*": ["package/src/integrations/api/*"]
+      "@core": ["./package/src/core"],
+      "@core/*": ["./package/src/core/*"],
+      "@api": ["./package/src/integrations/api"],
+      "@api/*": ["./package/src/integrations/api/*"]
     }
   },
   "include": ["./**/*.ts"],

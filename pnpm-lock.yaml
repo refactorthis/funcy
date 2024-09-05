@@ -127,6 +127,25 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
 
+  examples/parsers:
+    dependencies:
+      yup:
+        specifier: ^1.4.0
+        version: 1.4.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@tsconfig/node20':
+        specifier: ^20.1.4
+        version: 20.1.4
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+      typescript-eslint:
+        specifier: ^7.18.0
+        version: 7.18.0(eslint@8.57.0)(typescript@5.5.4)
+
   examples/sst-v2:
     devDependencies:
       '@tsconfig/node18':
@@ -144,6 +163,41 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
+
+  examples/sst-v2/packages/core:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.23.8
+    devDependencies:
+      '@types/node':
+        specifier: ^20.12.7
+        version: 20.16.1
+      sst:
+        specifier: ^2.41.4
+        version: 2.43.6(@aws-sdk/client-sso-oidc@3.632.0(@aws-sdk/client-sts@3.632.0(aws-crt@1.21.3))(aws-crt@1.21.3))(aws-crt@1.21.3)
+      vitest:
+        specifier: ^1.5.0
+        version: 1.6.0(@types/node@20.16.1)(@vitest/ui@1.6.0)
+
+  examples/sst-v2/packages/functions:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.23.8
+    devDependencies:
+      '@types/aws-lambda':
+        specifier: ^8.10.137
+        version: 8.10.143
+      '@types/node':
+        specifier: ^20.12.7
+        version: 20.16.1
+      sst:
+        specifier: ^2.41.4
+        version: 2.43.6(@aws-sdk/client-sso-oidc@3.632.0(@aws-sdk/client-sts@3.632.0(aws-crt@1.21.3))(aws-crt@1.21.3))(aws-crt@1.21.3)
+      vitest:
+        specifier: ^1.5.0
+        version: 1.6.0(@types/node@20.16.1)(@vitest/ui@1.6.0)
 
 packages:
 
