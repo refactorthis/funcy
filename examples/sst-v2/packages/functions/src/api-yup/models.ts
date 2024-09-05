@@ -5,15 +5,15 @@ export const GetTodoPath = object({
 })
 
 export const ListQuery = object({
-  skip: number().optional(),
-  take: number().optional(),
+  skip: number(),
+  take: number(),
 })
 
 export const CreateTodoRequest = object({
-  id: string(),
-  title: string(),
-  description: string(),
-  due: date(),
+  id: string().required(),
+  title: string().required(),
+  description: string().required(),
+  due: date().required(),
 })
 
 export const TodoResponse = object({

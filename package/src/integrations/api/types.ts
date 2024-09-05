@@ -1,8 +1,8 @@
 import { Options as CorsOptions } from '@middy/http-cors'
-import { Context, FuncyOptions } from 'package/src/core'
+import { Context, FuncyOptions } from '@core'
 import { APIGatewayProxyStructuredResultV2 } from 'aws-lambda'
 // WORKAROUND: Found a strange behaviour where linking via alias will break implicit typing..
-import { ApiParser } from '../../core/parsers'
+import { Schema } from '../../core/parsers'
 
 //export type APIGatewayResult = APIGatewayProxyStructuredResultV2 | APIGatewayProxyResult
 
@@ -123,6 +123,51 @@ export interface FuncyApiOptions<
       response?: ResponseContentOptions
     }
   }
+}
+
+/**
+ * Api parsing options
+ */
+export interface ApiParser<TResponse, TRequest, TPath, TQuery> {
+  /**
+   * Request body parser
+   */
+  request?: Schema<TRequest>
+
+  /**
+   * Response parser.
+   *
+   * If you would like to skip runtime validation of this schema, set the validateResponses property to false.
+   *
+   * @example
+   * ```typescript
+   * parser: {
+   *   response: z.object({})
+   * }
+   * ```
+   */
+  response?: Schema<TResponse>
+
+  /**
+   * URI path parser
+   */
+  path?: Schema<TPath>
+
+  /**
+   * URI querystring parser
+   */
+  query?: Schema<TQuery>
+
+  /**
+   * Response validation setting
+   *
+   *  - 'never' - do not perform response validation
+   *  - 'warn' - log warning and proceed
+   *  - 'error' - raise 500 error
+   *
+   * @default 'error'
+   */
+  validateResponses?: 'never' | 'warn' | 'error'
 }
 
 // NOTE: Not exported from middy packages

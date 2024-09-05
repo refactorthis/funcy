@@ -6,6 +6,8 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
     "outDir": "./dist",
     "paths": {
       "@core": ["package/src/core"],

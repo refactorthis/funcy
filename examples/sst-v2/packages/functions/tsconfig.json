@@ -4,6 +4,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": ".",
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@sst-v2/core/*": ["../core/src/*"],
